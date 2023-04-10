@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Events</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Search Events</h1>
+        <form action="" method="GET">
+            <label for="search-query">Search events:</label>
+            <input type="text" id="search-query" name="q">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</body>
+</html>
