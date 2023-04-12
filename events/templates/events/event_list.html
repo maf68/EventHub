@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+
+{% block content %}
+  <h1>Event List</h1>
+
+  <form method="GET" action="{% url 'events:event_search' %}">
+    <input type="text" name="q" placeholder="Search events">
+    <button type="submit">Search</button>
+  </form>
+
+  <br>
+
+  <form method="GET" action="{% url 'events:event_filter' %}">
+    <label for="location">Location:</label>
+    <select name="location">
+      <option value="">Select location</option>
+      {% for location in locations %}
+        <option value="{{ location.city }}">{{ location }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="date">Date:</label>
+    <input type="date" name="date" value="{{ request.GET.date }}">
+
+    <label for="id_duration">Duration (hh:mm:ss)</label>
+        <input type="text" class="form-control" id="id_duration" name="duration" placeholder="Duration (hh:mm:ss)" value="{{ request.GET.duration }}">
+
+    <label for="event_type">Event type:</label>
+    <select name="event_type">
+      <option value="">Select event type</option>
+      {% for event_type in event_types %}
+        <option value="{{ event_type }}">{{ event_type }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+  </form>
+
+  <br>
+
+  {% if object_list %}
+    <ul>
+      {% for event in object_list %}
+        <li>{{ event.title }} - {{ event.date }} - {{ event.city }} - {{ event.location }} - {{ event.event_type }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No events found.</p>
+  {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
