@@ -29,8 +29,17 @@
     <label for="date">Date:</label>
     <input type="date" name="date" value="{{ request.GET.date }}">
 
-    <label for="id_duration">Duration (hh:mm:ss)</label>
-        <input type="text" class="form-control" id="id_duration" name="duration" placeholder="Duration (hh:mm:ss)" value="{{ request.GET.duration }}">
+    <label for="duration">Duration:</label>
+        <select name="duration" id="duration">
+            <option value="">--Select Duration--</option>
+            <option value="01:00:00">1 hour</option>
+            <option value="01:30:00">1 hour 30 minutes</option> 
+            <option value="02:00:00">2 hours</option>
+            <option value="02:30:00">2 hour 30 minutes</option> 
+            <option value="3:00:00">3+ hours</option>
+        </select>
+    <!--<label for="id_duration">Duration (hh:mm:ss)</label>
+        <input type="text" class="form-control" id="id_duration" name="duration" placeholder="Duration (hh:mm:ss)" value="{{ request.GET.duration }}">-->
 
     <label for="event_type">Event type:</label>
     <select name="event_type">
