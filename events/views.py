@@ -30,7 +30,25 @@ class EventListView(ListView):
         context['locations'] = Event.objects.values_list('city', flat=True).distinct()
         return context
 
+class EventSearchView(ListView):
+    model = Event
+    template_name = 'events/search_results.html'
 
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query and query.strip():
+            object_list = Event.objects.filter(
+                Q(title__icontains=query) |
+                Q(description__icontains=query) |
+                Q(city__icontains=query) |
+                Q(location__icontains=query) |
+                Q(event_type__icontains=query) |
+                Q(date__icontains=query) |
+                Q(duration__icontains=query)
+            )
+            return object_list
+        else:
+            return Event.objects.none()
 
 class SearchView(TemplateView):
     template_name = 'events/search_results.html'
