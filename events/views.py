@@ -50,23 +50,6 @@ class EventSearchView(ListView):
         else:
             return Event.objects.none()
 
-class SearchView(TemplateView):
-    template_name = 'events/search_results.html'
-
-    def get(self, request, *args, **kwargs):
-        query = request.GET.get('q')
-        if query:
-            object_list = Event.objects.filter(
-                Q(title__icontains=query) |
-                Q(description__icontains=query) |
-                Q(city__icontains=query) |
-                Q(location__icontains=query) |
-                Q(event_type__icontains=query)
-            )
-        else:
-            object_list = Event.objects.none()
-
-        return self.render_to_response({'object_list': object_list, 'query': query})
 
 
 class EventFilterView(ListView):
