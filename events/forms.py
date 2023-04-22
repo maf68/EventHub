@@ -1,12 +1,24 @@
-from django import forms
-from django.forms.widgets import TextInput
+from django.forms import ModelForm
+from events.models import Event
 
-class DurationInput(TextInput):
-    input_type = 'duration'
 
-class EventForm(forms.ModelForm):
-    duration = forms.DurationField(widget=DurationInput)
-
+class EventForm(ModelForm):
     class Meta:
         model = Event
-        fields = ['location', 'date', 'duration', 'event_type']
+        fields = [
+            "title",
+            "description",
+            "city",
+            "location",
+            "date",
+            "poster",
+        ]
+
+        labels = {
+            "title": "Title",
+            "description": "Description",
+            "city": "City",
+            "location": "Location",
+            "date": "Date",
+            "poster": "Poster",
+        }

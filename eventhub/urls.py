@@ -14,15 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
-from events.views import EventSearchView
-from events.views import EventFilterView
+from django.urls import path
+from events.views import create_event, homepage, edit_event
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('search/', EventSearchView.as_view(), name='event_search'),
-    path('filter/', EventFilterView.as_view(), name='event_filter'),
-    path('', include('events.urls')),
+    path("admin/", admin.site.urls),
+    # path("homepage/", homepage, name="homepage"),
+    # path("create_event/", create_event, name="create_event"),
+    # path("edit_event/", edit_event, name="edit_event"),
+    path("", homepage, name="homepage"),
+    path("create_event/", create_event, name="create_event"),
+    path("edit_event/<int:event_id>/", edit_event, name="edit_event"),
 ]
-    #path('events/', include('events.urls')),
-    #path('events/search/', include('events.urls', namespace='events')),
