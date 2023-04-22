@@ -16,7 +16,16 @@ class Event(models.Model):
     poster = models.URLField(blank = True)
     duration = models.DurationField(default=timedelta(hours=1))
     event_type = models.CharField(max_length=255, default='General')
-
+    request_choices = (
+        ("Accept", "Accept"),
+        ("Reject", "Reject"),
+        ("Pending", "Pending"),
+    )
+    request_status = models.CharField(
+        max_length=20,
+        choices=request_choices,
+        default="Pending",
+    )
     def _str_(self):
         return self.title
 
