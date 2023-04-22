@@ -1,0 +1,18 @@
+<h1>Edit Event</h1>
+<form method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+</form>
+
+{% if event.attendees.count > 0 %}
+<h2>Attendees</h2>
+<ul>
+    {% for attendee in event.attendees.all %}
+    <li>{{ attendee.username }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No one has confirmed whether they will attend this event yet.</p>
+{% endif %}
+
+<a href="/">Back to Homepage</a>
