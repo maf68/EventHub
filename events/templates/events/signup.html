@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <meta charset="UTF-8">
+</head>
+<body>  
+    <h1> EventHub </h1> 
+    <strong><h2> Sign Up</h2></strong>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p> Username {{form.username}} </p>
+        <p> First Name {{form.first_name}}</p> 
+        <p> Last Name {{form.last_name}} </p> 
+        <p> Date of Birth {{form.date_of_birth}} </p> 
+        <p> Email {{form.email}} </p>
+        <p> Nationality {{form.nationality}}</p>
+        <p> Bio {{form.bio}}</p>
+        <p> Profile Picture {{form.picture}} </p>
+
+        <p>{% if form.date_of_birth.errors %}</p>
+        {% for error in form.date_of_birth.errors %}
+        <p class="errors"> {{error}} </p>
+        {% endfor %}
+        {% endif %}
+
+         
+            <p> Promoter: </p>
+            {{ form.is_promoter }}
+         
+        
+        <p> Password: {{form.password1}} </p>
+        <p>{% if form.password1.errors %}</p>
+        {% for error in form.password1.errors %}
+            <p class="errors">{{error}}</p>
+        {% endfor %}    
+        {% endif %}
+
+        <p> Password Confirmation: {{form.password2}} </p>
+        <p>{% if form.password2.errors %}</p>
+        {% for error in form.password2.errors%}
+        <p class="errors"> {{error}} </p>
+        {% endfor %}
+        {% endif %}
+
+        <p></p>
+
+        <button type="submit"> Sign Up </button>
+    </form>
+</body>
+</html>

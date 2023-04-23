@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  padding: 0;
+  /* font-family: 'Open Sans', sans-serif; */
+  font-family:Arial, Helvetica, sans-serif;
+  background-image: url("./pic.png");
+  background-size: cover ;
+    
+}
+
+h1 {
+  font-size: 55px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: white;
+}
+
+strong {
+  display: block;
+  font-size: 24px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: white;
+}
+
+form {
+  width: 500px;
+  margin: 0 auto;
+}
+
+p {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: white;
+}
+
+input[type="text"], input[type="password"], input[type="date"], input[type="email"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 2px solid #ddd;
+}
+
+select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 2px solid #ddd;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: navy;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #555;
+}
+.errors{
+  color: rgb(228, 204, 172);
+}
