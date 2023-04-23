@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'styles2.css' %}">
+    </head>
+    <body>
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p> Username {{ form.username }}</p>
+        <p> Password {{form.password}} </p>
+        {% if error_message %}
+        <p class="error"> {{error_message}}</p>
+        {% endif %}
+        <button type="submit">Login</button>
+    </form>
+    </body>
+</html>

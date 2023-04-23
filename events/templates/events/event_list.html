@@ -1,5 +1,6 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" /> {% endblock %} {% block content %}
+<h1>Event List</h1>
 
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -14,9 +15,9 @@
   <form method="GET" action="{% url 'events:event_search' %}">
     <input type="text" name="q" placeholder="Search events">
     <button type="submit">Search</button>
-  </form>
+</form>
 
-  <br>
+<br />
 
   <form method="GET" action="{% url 'events:event_filter' %}">
     {% comment %} <div class="row">

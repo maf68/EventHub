@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django_countries.fields import CountryField
 from datetime import timedelta
 from django.db.models import Avg
 
@@ -18,7 +19,16 @@ class Event(models.Model):
     poster = models.URLField(blank = True)
     duration = models.DurationField(default=timedelta(hours=1))
     event_type = models.CharField(max_length=255, default='General')
-
+    request_choices = (
+        ("Accept", "Accept"),
+        ("Reject", "Reject"),
+        ("Pending", "Pending"),
+    )
+    request_status = models.CharField(
+        max_length=20,
+        choices=request_choices,
+        default="Pending",
+    )
     def _str_(self):
         return self.title
 
@@ -41,11 +51,11 @@ class Event(models.Model):
 
 class MyUser(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)
-    nationality = models.CharField(max_length=56)
+    nationality = CountryField()
     address = models.CharField(max_length=300)
     is_promoter = models.BooleanField(default=False)
     bio = models.CharField(max_length=500, default="")
-    picture = models.URLField(blank = True)
+    picture = models.ImageField(blank = True)
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
