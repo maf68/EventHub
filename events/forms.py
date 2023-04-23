@@ -33,6 +33,14 @@ class ReviewForm(forms.ModelForm):
         if not comment:
             raise forms.ValidationError("Comment cannot be empty")
         return comment
+    
+class DurationInput(TextInput):
+    input_type = 'duration'
+
+class EventForm(forms.ModelForm):
+    duration = forms.DurationField(widget=DurationInput)
+
+    class Meta:
         model = Event
         fields = [
             "title",
@@ -53,6 +61,7 @@ class ReviewForm(forms.ModelForm):
             "poster": "Poster",
             "duration": "Duration"
         }
+
 
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, help_text='*')
