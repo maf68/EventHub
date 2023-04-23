@@ -8,53 +8,72 @@
 
 
 {% block content %}
-    <h1>Filter Events</h1>
-
-    <form method="get" action="{% url 'events:event_filter' %}">
-        <label for="location">Location:</label>
-        <select name="location" id="location">
-        <option value="">--Select Location--</option>
-        {% for city in cities %}
-        <option value="{{ city }}">{{ city }}</option>
-        {% endfor %}
-    </select>
-
-        <label for="date">Date:</label>
-        <input type="date" name="date" id="date" value="{{ date }}">
-
-        <!--<label for="id_duration">Duration (hh:mm:ss)</label>
-        <input type="text" class="form-control" id="id_duration" name="duration" placeholder="Duration (hh:mm:ss)" value="{{ request.GET.duration }}">-->
-        
-       <label for="duration">Duration:</label>
-        <select name="duration" id="duration">
-            <option value="">--Select Duration--</option>
-            <option value="01:00:00">1 hour</option>
-            <option value="01:30:00">1 hour 30 minutes</option> 
-            <option value="02:00:00">2 hours</option>
-            <option value="02:30:00">2 hour 30 minutes</option> 
-            <option value="3:00:00">3+ hours</option>
-            
-        </select>
-
-        <label for="event_type">Event Type:</label>
-        <select name="event_type" id="event_type">
-            <option value="">--Select Event Type--</option>
-            {% for event_type in event_types %}
-                <option value="{{ event_type }}">{{ event_type }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">Filter</button>
-    </form>
-
-    {% if object_list %}
-        <ul>
-            {% for event in object_list %}
-                <li>{{ event.title }} - {{ event.date }} - {{ event.city }} - {{ event.location }} - {{ event.event_type }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No events found.</p>
-    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Filter Events</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="get" action="{% url 'events:event_filter' %}">
+                            <div class="form-group">
+                                <label for="location">Location:</label>
+                                <select class="form-control" name="location" id="location">
+                                    <option value="">--Select Location--</option>
+                                    {% for city in cities %}
+                                        <option value="{{ city }}">{{ city }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date:</label>
+                                <input type="date" class="form-control" name="date" id="date" value="{{ date }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Duration:</label>
+                                <select class="form-control" name="duration" id="duration">
+                                    <option value="">--Select Duration--</option>
+                                    <option value="01:00:00">1 hour</option>
+                                    <option value="01:30:00">1 hour 30 minutes</option> 
+                                    <option value="02:00:00">2 hours</option>
+                                    <option value="02:30:00">2 hour 30 minutes</option> 
+                                    <option value="3:00:00">3+ hours</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="event_type">Event Type:</label>
+                                <select class="form-control" name="event_type" id="event_type">
+                                    <option value="">--Select Event Type--</option>
+                                    {% for event_type in event_types %}
+                                        <option value="{{ event_type }}">{{ event_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                {% if object_list %}
+                    <ul class="list-group">
+                        {% for event in object_list %}
+                            <li class="list-group-item">
+                                <h4>{{ event.title }}</h4>
+                                <p>{{ event.date }} - {{ event.city }} - {{ event.location }} - {{ event.event_type }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-center">No events found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

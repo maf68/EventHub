@@ -1,14 +1,48 @@
-from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
-from django.views.generic import TemplateView
-from django.views.generic import ListView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
-from .models import Event,MyUser
+from .models import Event, Review, MyUser
+from .forms import ReviewForm
+from django.urls import reverse
 from django.contrib import messages
 from .forms import EventForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login,authenticate,logout
 from .forms import CustomUserCreationForm
+
+def event_reviews(request, id):
+    event = get_object_or_404(Event, id=id)
+    reviews = Review.objects.filter(event=event).order_by('-created_at')
+    context = {'event': event, 'reviews': reviews}
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.event = event
+            review.user = request.user
+            review.comment = form.cleaned_data['comment']
+            review.save()
+            reviews_url = reverse('events:event_reviews', args=[event.id]) + '?reviews=1'
+            return redirect(reviews_url)
+            # return redirect('events:event_reviews', event.id)
+        
+        else:
+            context['form'] = form
+            context['form_errors'] = form.errors
+    else:
+        form = ReviewForm()
+        context['form'] = form 
+
+    # If the updated reviews list is included in the query parameters,
+    # retrieve the updated reviews list and include it in the context
+    if 'reviews' in request.GET:
+        updated_reviews = Review.objects.filter(event=event).order_by('-created_at')
+        context['reviews'] = updated_reviews
+        
+    return render(request, 'events/event_reviews.html', context)
+
+
 class EventListView(ListView):
     model = Event
     template_name = 'events/event_list.html'
@@ -54,25 +88,6 @@ class EventSearchView(ListView):
         else:
             return Event.objects.none()
 
-class SearchView(TemplateView):
-    template_name = 'events/search_results.html'
-
-    def get(self, request, *args, **kwargs):
-        query = request.GET.get('q')
-        if query:
-            object_list = Event.objects.filter(
-                Q(title__icontains=query) |
-                Q(description__icontains=query) |
-                Q(city__icontains=query) |
-                Q(location__icontains=query) |
-                Q(event_type__icontains=query)
-            )
-        else:
-            object_list = Event.objects.none()
-
-        return self.render_to_response({'object_list': object_list, 'query': query})
-
-
 class EventFilterView(ListView):
     model = Event
     template_name = 'events/event_filter.html'
@@ -114,7 +129,6 @@ class EventFilterView(ListView):
         context['cities'] = Event.objects.order_by('city').values_list('city', flat=True).distinct()
         context['event_types'] = self.model.objects.order_by('event_type').values_list('event_type', flat=True).distinct()
         return context
-
 
 def create_event(request):
     # print(request.user.is_authenticated)  # is logged in

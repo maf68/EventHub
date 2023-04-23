@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django_countries.fields import CountryField
 from datetime import timedelta
+from django.db.models import Avg
+
 
 class Event(models.Model):
     title = models.CharField(max_length=80)
@@ -39,6 +41,13 @@ class Event(models.Model):
         else:
             self.image_urls = url
         self.save()    
+    def get_average_rating(self):
+        reviews = self.reviews.all()
+        if reviews:
+            total_ratings = sum([review.rating for review in reviews])
+            return round(total_ratings / len(reviews), 1)
+        else:
+            return 0
 
 class MyUser(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)
@@ -50,3 +59,12 @@ class MyUser(AbstractUser):
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
+class Review(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='reviews')
+    comment = models.CharField(max_length=500)
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Review for {self.event.title} by {self.user.username}'

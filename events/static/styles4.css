@@ -1,50 +1,73 @@
 body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+    }
+.card {
+    width: 18rem;
+    margin: 5rem;
+}
+      
+.card-img-top {
+    height: 10rem;
+    object-fit: cover;
+}
+      
+.row-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     background-image: url('./1_ydhn1QPAKsrbt6UWfn3YnA.jpg');
     background-size: cover;
     margin-block-end: 500px;
     font-family: Georgia, 'Times New Roman', Times, serif
 }
-
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
 }
-
+    
 h1 {
     font-size: 50px;
     font-family: Georgia, 'Times New Roman', Times, serif;
     margin-bottom: 20px;
     text-align: center;
 }
-
-h2{
+    
+h2 {
     font-size: 30px;
-    margin-bottom: 10px;
     margin-top: 70px;
+    margin-bottom: 10px;
     text-align: left;
-    font-family: Georgia, 'Times New Roman', Times, serif; 
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
+    
 form {
-    display: inline-flex;
-    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     margin-bottom: 20px;
 }
-
+    
 label {
     font-size: 20px;
     margin-right: 10px;
 }
-
-input[type="text"] {
+    
+input[type="text"], select {
     font-size: 20px;
     padding: 5px 10px;
     border-radius: 5px;
-    border: 2px solid #ced2ee;
+    border: 2px solid #b1b3c5;
     width: 100%;
     max-width: 400px;
 }
-
+    
+select {
+    margin-right: 10px;
+}
+    
 button[type="submit"] {
     font-size: 20px;
     padding: 5px 10px;
@@ -54,7 +77,17 @@ button[type="submit"] {
     color: #fff;
     cursor: pointer;
 }
-
+    
 button[type="submit"]:hover {
-    background-color: #0062cc;
+    background-color: #519ff3;
+}
+    
+    /* add media query for mobile devices */
+@media (max-width: 767px) {
+    h1 {
+        font-size: 40px;
+    }
+    h2 {
+        font-size: 25px;
+    }
 }
