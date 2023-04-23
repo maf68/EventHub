@@ -3,10 +3,12 @@ from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
-from .models import Event
+from .models import Event,MyUser
 from django.contrib import messages
 from .forms import EventForm
-
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login,authenticate,logout
+from .forms import CustomUserCreationForm
 class EventListView(ListView):
     model = Event
     template_name = 'events/event_list.html'
@@ -158,4 +160,65 @@ def edit_event(request, event_id):
 
 
 def homepage(request):
-    return HttpResponse("HomePage")
+    allevents = Event.objects.all()
+    query = request.GET.get('q')
+    if query:
+        events = Event.objects.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(city__icontains=query) |
+            Q(location__icontains=query) |
+            Q(event_type__icontains=query)
+        )
+    else:
+        events = Event.objects.none()
+
+    return render(request, '', {'user': MyUser, 'events': events, 'query': query, 'allevents': allevents})
+
+def signup(request):
+    if request.method == 'POST': 
+        form = CustomUserCreationForm(request.POST, request.FILES) # create a form containing data inputted by the user
+        if form.is_valid():
+            form.save() # create the user and save into database
+            print(form.cleaned_data)
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(request, username=username, password=password) #authenticate username and password
+            login(request, user) # login that user
+            return redirect('events:homepage') #take user to homepage
+        else:
+            return render(request, 'events/signup.html', {'form': form}) #re render html page and display errors
+    else:  # if method is a get
+         form = CustomUserCreationForm() # create an empty form
+         return render(request, 'events/signup.html', { # render the html file with that form 
+             'form' : form
+         })      
+    
+def login_(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST) #create a form containing data inputted by user
+        if form.is_valid():
+            username = form.cleaned_data.get('username') #get username and pass in form
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password) #check if username and password in form match database
+            if user is not None: #if match
+                login(request, user) # login user and redirect to homepage
+                return redirect('events:homepage')
+            else:
+                error_message = 'Invalid login credentials. Please try again.' # if no match, invalid
+        else:
+            error_message = 'Invalid login credentials. Please try again.'    # if invalid form, invalid     
+    else:
+        form = AuthenticationForm() # if get request, create an empty form for user to fill 
+        error_message = None
+    return render(request, 'events/login.html', {'form': form, 'error_message': error_message}) # render html form     
+
+def logout_(request):
+    print("logout")
+    logout(request)
+    return redirect('events:homepage')
+
+def myaccount_view(request):
+    return render(request, 'events/myaccount.html', {
+        'user': MyUser
+    })
