@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/star-rating.css' %}"> {% endcomment %}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ event.title }} Reviews</h1>
+
+  <div class="average-rating">
+    <p>Average Rating: {{ event.get_average_rating }}</p>
+  </div>
+ 
+{% if 'reviews' in request.GET %} 
+  {% for review in reviews %}
+    <div class="review">
+      <h3>{{ review.user.username }}</h3>
+      <p>Rating: {{ review.rating }}</p>
+      <p>Comment: {{ review.comment }}</p>
+      <p>Date: {{ review.created_at|date:'F d, Y' }}</p>
+    </div>
+  {% empty %}
+    <p>No reviews found.</p>
+  {% endfor %}
+{% endif %}
+  <p>No reviews found.</p>
+
+
+  <h2>Add Review</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        {% for field, errors in form.errors.items %}
+          <p>{{ field }}:</p>
+          <ul>
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% comment %} <div class="star-rating">
+      <input type="radio" id="star-1" name="rating" value="1">
+      <label for="star-1">&#9733;</label>
+      <input type="radio" id="star-2" name="rating" value="2">
+      <label for="star-2">&#9733;</label>
+      <input type="radio" id="star-3" name="rating" value="3">
+      <label for="star-3">&#9733;</label>
+      <input type="radio" id="star-4" name="rating" value="4">
+      <label for="star-4">&#9733;</label>
+      <input type="radio" id="star-5" name="rating" value="5">
+      <label for="star-5">&#9733;</label>
+    </div> {% endcomment %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% comment %} <script src="{% static 'js/star-rating.js' %}"></script> {% endcomment %}
+{% endblock %}

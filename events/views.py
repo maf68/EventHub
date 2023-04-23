@@ -1,9 +1,41 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.views.generic import ListView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
-from .models import Event
+from .models import Event, Review
+from .forms import ReviewForm
+from django.urls import reverse
+
+def event_reviews(request, id):
+    event = get_object_or_404(Event, id=id)
+    reviews = Review.objects.filter(event=event).order_by('-created_at')
+    context = {'event': event, 'reviews': reviews}
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.event = event
+            review.user = request.user
+            review.comment = form.cleaned_data['comment']
+            review.save()
+            reviews_url = reverse('events:event_reviews', args=[event.id]) + '?reviews=1'
+            return redirect(reviews_url)
+            # return redirect('events:event_reviews', event.id)
+        
+        else:
+            context['form'] = form
+            context['form_errors'] = form.errors
+    else:
+        form = ReviewForm()
+        context['form'] = form 
+
+    # If the updated reviews list is included in the query parameters,
+    # retrieve the updated reviews list and include it in the context
+    if 'reviews' in request.GET:
+        updated_reviews = Review.objects.filter(event=event).order_by('-created_at')
+        context['reviews'] = updated_reviews
+        
+    return render(request, 'events/event_reviews.html', context)
 
 class EventListView(ListView):
     model = Event
@@ -50,8 +82,6 @@ class EventSearchView(ListView):
         else:
             return Event.objects.none()
 
-
-
 class EventFilterView(ListView):
     model = Event
     template_name = 'events/event_filter.html'
@@ -93,3 +123,4 @@ class EventFilterView(ListView):
         context['cities'] = Event.objects.order_by('city').values_list('city', flat=True).distinct()
         context['event_types'] = self.model.objects.order_by('event_type').values_list('event_type', flat=True).distinct()
         return context
+    

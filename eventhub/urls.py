@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from events.views import EventSearchView
-from events.views import EventFilterView
+from events.views import EventSearchView, EventFilterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('search/', EventSearchView.as_view(), name='event_search'),
     path('filter/', EventFilterView.as_view(), name='event_filter'),
     path('', include('events.urls')),
+    
 ]
+#path('events/<int:pk>/reviews/', ReviewListView.as_view(), name='event_reviews'),
     #path('events/', include('events.urls')),
     #path('events/search/', include('events.urls', namespace='events')),
