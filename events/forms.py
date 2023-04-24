@@ -5,7 +5,8 @@ from events.models import Event, MyUser
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
-
+from django.core.exceptions import ValidationError
+import re;
 
 class ReviewForm(forms.ModelForm):
     RATING_CHOICES = [

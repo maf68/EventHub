@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, MyUser, Review
+from .models import Event, MyUser, Review, Announcement
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'city', 'location')
@@ -17,6 +17,7 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ('event__title', 'user__username')
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
+    
 #list_display attribute that specifies the fields to be 
 #displayed in the admin interface, a search_fields 
 #attribute that specifies fields to be searched on, 
@@ -25,3 +26,4 @@ class ReviewAdmin(admin.ModelAdmin):
 admin.site.register(Event, EventAdmin)
 admin.site.register(MyUser, MyUserAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(Announcement)

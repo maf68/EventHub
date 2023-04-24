@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
-from .models import Event, Review, MyUser
+from .models import Event, Review, MyUser, Announcement
 from .forms import ReviewForm
 from django.urls import reverse
 from django.contrib import messages
@@ -10,6 +10,10 @@ from .forms import EventForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login,authenticate,logout
 from .forms import CustomUserCreationForm
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
 
 def event_reviews(request, id):
     event = get_object_or_404(Event, id=id)
@@ -236,3 +240,58 @@ def myaccount_view(request):
     return render(request, 'events/myaccount.html', {
         'user': MyUser
     })
+
+#Display all announcements for an event
+def get_event_announcements(request, Event_id):
+    # Get the event object based on the event_id parameter
+    event = get_object_or_404(Event, id=Event_id)
+
+    # Get all the announcements for the event
+    announcements = Announcement.objects.filter(event=event)
+
+    # Render the announcements in a template or return as JSON
+    context = {
+        'event': event,
+        'announcements': announcements,
+    }
+    return render(request, 'event_announcements.html', context)
+
+#Create an announcement.
+@login_required
+def create_announcement(request, Event_id):
+    event = get_object_or_404(Event, id=Event_id)
+
+    if request.MyUser != event.promoter:
+        return HttpResponseBadRequest("You're not authorized to create announcements for this event.")
+
+    if request.method == "POST":
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        image = request.POST.get('image')
+
+        if title and description:
+            announcement = Announcement.objects.create(
+                title=title,
+                description=description,
+                image=image,
+                event=event
+            )
+            followers = event.following.all()
+            subject = f'New announcement for {event.title}'
+            message = f'There is a new announcement for {event.title}:\n\nTitle: {announcement.title}\nDescription: {announcement.description}\n\n'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [follower.email for follower in followers]
+            send_mail(subject, message, from_email, recipient_list, fail_silently=True)
+
+            #Needs to be updated to redirect to the url for the event details.
+            return render(request, 'Event_details.html', {'event': event})
+            #return HttpResponseRedirect(reverse('Event', args=[event.id]))
+    
+    return render(request, 'create_announcement.html', {'event': event})
+
+#Probably better to make an edit announcement in the future.
+
+#Announcement details.
+def Announcement_by_id(request, Announcement_id):
+    announcement = Announcement.objects.get(pk = Announcement_id)
+    return render(request, 'announcement_details.html', {'Announcement': announcement})    
