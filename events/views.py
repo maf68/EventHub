@@ -261,8 +261,8 @@ def get_event_announcements(request, Event_id):
 def create_announcement(request, Event_id):
     event = get_object_or_404(Event, id=Event_id)
 
-    if request.MyUser != event.promoter:
-        return HttpResponseBadRequest("You're not authorized to create announcements for this event.")
+    #if request.MyUser != event.promoter:
+    #    return HttpResponseBadRequest("You're not authorized to create announcements for this event.")
 
     if request.method == "POST":
         title = request.POST.get('title')
