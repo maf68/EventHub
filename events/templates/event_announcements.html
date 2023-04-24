@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{event.title}} Announcements</title>
+  </head>
+  <body>
+    <h1>{{event.title}} Announcements</h1>
+    {% if announcements %}
+      <ul>
+        {% for Announcement in announcements %}
+        <li>{{ Announcement.title }}</li>
+        <li>{{ Announcement.description }}</li>
+        <li><img src="{{ Announcement.image }}" alt="{{ Announcement.title }}" style="width: 30%;"></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No announcements for this event yet.</p>
+    {% endif %}
+  </body>
+</html>

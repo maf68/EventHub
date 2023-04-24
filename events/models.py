@@ -6,7 +6,6 @@ from django_countries.fields import CountryField
 from datetime import timedelta
 from django.db.models import Avg
 
-
 class Event(models.Model):
     title = models.CharField(max_length=80)
     description = models.TextField()
@@ -29,9 +28,10 @@ class Event(models.Model):
         choices=request_choices,
         default="Pending",
     )
+    #image_urls = models.TextField(blank=True) #If the image list if used, uncomment this and the functions for it below.
     def _str_(self):
         return self.title
-
+    """
     def get_image_urls(self):
         return self.image_urls.split(',')
 
@@ -41,6 +41,7 @@ class Event(models.Model):
         else:
             self.image_urls = url
         self.save()    
+    """
     def get_average_rating(self):
         reviews = self.reviews.all()
         if reviews:
@@ -68,3 +69,11 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Review for {self.event.title} by {self.user.username}'
+
+class Announcement(models.Model):
+    title = models.CharField(max_length = 150, blank = False, default = "")
+    description = models.CharField(max_length = 600, blank = False)
+    image = models.URLField(blank=True, null= True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='announcement_event', blank=False)
+    def _str_(self):
+        return f'Announcement for {self.event.title} titled {self.title}'
