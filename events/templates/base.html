@@ -12,7 +12,7 @@
 
 <body>
     <header>
-        <h1 class="bg-light text-dark">Event Hub</h1>
+       <!--<h1 class="bg-light text-dark">Event Hub</h1>-->
         {% block navigation %}
         <nav class="navbar navbar-expand-sm bg-dark">
             <div class="container-fluid">
@@ -24,17 +24,26 @@
                 <div class="navbar-nav">
                     <!-- <a class="nav-link active" href="{% url 'events:event_list' %}">All Events</a>-->
                     <!--<a class="nav-link active text-light" href="{% url 'events:event_search' %}">Search Events</a>-->
-                    <a class="nav-link active text-light" href="{% url 'events:event_filter' %}">Filter Events</a>
-                    <a class="nav-link active text-light" href="{% url 'events:event_reviews' id=1 %}">Event Reviews</a>                  
-                    <a class="nav-link active text-light" href="{% url 'create_event' %}">Create Event</a>
+                    <!--<a class="nav-link active text-light" href="{% url 'events:event_filter' %}">Filter Events</a>-->
+                    <!--<a class="nav-link active text-light" href="{% url 'events:event_reviews' id=1 %}">Event Reviews</a>-->                  
+                    <a class="nav-link active text-light {% if not user.is_promoter %}d-none{% endif %}" href="{% url 'create_event' %}">Create Event</a>
+                    <a class="nav-link active text-light {% if not user.is_authenticated %}d-none{% endif %}" href="">Followed Events</a>
                 </div>
-                </div>
-                <a type="button" class="btn btn-outline-light col-md-1 m-1" href="{% url 'events:signup' %}">Sign up</a>
-                <a type="button" class="btn btn-outline-light col-md-1 m-1" href="{% url 'events:login' %}">Login</a>
-                <form method="GET" class="input-group col-md-3 col-sm-2" action="{% url 'events:event_search' %}">
+                </div>            
+                <form method="GET" class="input-group col-md-3 col-sm-4" action="{% url 'events:event_search' %}">
                     <input type="text" class="form-control" name="q" placeholder="Search events">
                     <button type="submit" class="btn btn-outline-light btn-addon-2">Search</button>
                 </form>
+                <a type="button" class="btn btn-outline-light col-md-1 col-sm-2  m-1 {% if user.is_authenticated %}d-none{% endif %}" href="{% url 'events:signup' %}">Sign up</a>
+                <a type="button" class="btn btn-outline-light col-md-1 col-sm-2 m-1 {% if user.is_authenticated %}d-none{% endif %}" href="{% url 'events:login' %}">Login</a>
+                <!--<a type="button" class="btn btn-outline-light col-md-1 m-1 {% if not user.is_authenticated %}d-none{% endif %}" href="">{{user.username}}</a>-->
+                <a class="btn btn-outline-light dropdown-toggle col-md-1 m-1 {% if not user.is_authenticated %}d-none{% endif %}" href="#" role="button" data-toggle="dropdown" aria-expanded="false">{{user.username}}</a>
+                    <div class="dropdown-menu dropdown-menu-right bg-dark ">
+                        <a class="dropdown-item bg-dark text-light" href="#">Profile</a>
+                        <a class="dropdown-item bg-dark text-light" href="#">Settings</a>
+                        <a class="dropdown-item bg-dark text-light" href="{% url 'events:logout' %}">Log out</a>
+                    </div>
+                
             </div>
             </div>   
         </nav>

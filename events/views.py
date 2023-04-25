@@ -71,6 +71,7 @@ class EventListView(ListView):
         context['cities'] = Event.objects.order_by().values_list('city', flat=True).distinct()
         context['event_types'] = self.model.objects.order_by().values_list('event_type', flat=True).distinct()
         context['locations'] = Event.objects.values_list('city', flat=True).distinct()
+        context['user'] = self.request.user
         return context
 
 class EventSearchView(ListView):
