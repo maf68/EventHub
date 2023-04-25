@@ -3,7 +3,7 @@ from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
 from .models import Event, Review, MyUser, Announcement
-from .forms import ReviewForm
+from .forms import ReviewForm, MyUserForm
 from django.urls import reverse
 from django.contrib import messages
 from .forms import EventForm
@@ -262,7 +262,7 @@ def get_event_announcements(request, Event_id):
 def create_announcement(request, Event_id):
     event = get_object_or_404(Event, id=Event_id)
     if (request.user.is_authenticated == False) or (event.promoter != request.user):
-        return redirect(BASE_URL)
+        return redirect('/')
     if request.method == "POST":
         title = request.POST.get('title')
         description = request.POST.get('description')
@@ -283,7 +283,7 @@ def create_announcement(request, Event_id):
             send_mail(subject, message, from_email, recipient_list, fail_silently=True)
 
             #Needs to be updated to redirect to the url for the event details.
-            return redirect(BASE_URL)
+            return redirect('/')
     
     return render(request, 'create_announcement.html', {'event': event})
 
@@ -293,3 +293,28 @@ def create_announcement(request, Event_id):
 def Announcement_by_id(request, Announcement_id):
     announcement = Announcement.objects.get(pk = Announcement_id)
     return render(request, 'announcement_details.html', {'Announcement': announcement})    
+
+def profile(request):
+    if (request.user.is_authenticated):
+        user = request.user
+        return render(request, 'profile.html', {'user': user})
+    return redirect('/')
+
+def privacy_policy(request):
+    return render(request, 'privacy.html', {})
+
+def terms(request):
+    return render(request, 'terms.html', {})
+
+def settings_(request):
+    user = request.user
+    if (user.is_authenticated):
+        if request.method == 'POST':
+            form = MyUserForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+        else:
+            form = MyUserForm(instance=user)
+        return render(request, 'settings.html', {'form': form})
+    return redirect("/")

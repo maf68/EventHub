@@ -1,16 +1,72 @@
 {% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" /> {% endblock %} 
-<h1>Event List</h1>
-
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+<!--{ load bootstrap5 %}
+{ bootstrap_css %}
+{ bootstrap_javascript %}-->
+{% endblock %} 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static './css/styles.css' %}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static './css/styles.css' %}">
 </head>
-
+<title>{% block title %}Eventhub - Your One-Stop Event Planning Destination{% endblock %}</title>
 <body>
-{% block content %}
-  <h1>Event List</h1>
+{%block content %}
+  <!--
+  <div class="row justify-content-center">
+  <div id="carouselExample" class="carousel slide" data-ride="carousel"  style="width: 30%; height: 400px;">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div style="background-image: url('/static/media/event1background.png'); background-size: cover; background-position: center center; height: 100%;">
+          <a href="#"><img class="d-block w-100 img-fluid" src="/static/media/event1.png" alt="Upcoming Event 1"></a>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <a href="#"><img class="d-block w-100" src="/static/media/event2.png" alt="Upcoming Event 2"></a>
+      </div>
+      <div class="carousel-item">
+        <a href="#"><img class="d-block w-100" src="/static/media/event3.png" alt="Upcoming Event 3"></a>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  </div>
+-->
+  {% if object_list %}
+    <div class="row justify-content-center m-1">
+      {% for event in object_list %}
+        <div class="col-md-3 col-sm-4 ">
+          <div class="card h-100">
+            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+                <p class="card-text">{{ event.description }}</p>
+                <a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>
+              </div>
+            </div>
+          {% if forloop.counter|divisibleby:4 %}
+            </div><div class="row justify-content-center m-1 row-cards">
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+{% else %}
+  <p>No events found.</p>
+{% endif %}
+</div>
+
+{% endblock %}
+</body>
+
+<!-- <h1>Event List</h1>
 
   <form method="GET" action="{% url 'events:event_search' %}">
     <input type="text" name="q" placeholder="Search events">
@@ -64,41 +120,4 @@
     </div>
   </form>
 
-  <br>
-
-  <div class="container-lg ">
-  {% if object_list %}
-    <div class="row row-cards">
-      {% for event in object_list %}
-        <div class="col-md-3">
-          <div class="card">
-            <img src="{{ event.poster.url }}" class="card-img-top" alt="{{ event.title }}">
-              <div class="card-body">
-                <h5 class="card-title">{{ event.title }}</h5>
-                <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
-                <p class="card-text">{{ event.description }}</p>
-                <a href="{% url 'events:event_filter' %}" class="btn btn-primary">View details</a>
-              </div>
-            </div>
-          {% if forloop.counter|divisibleby:4 %}
-            </div><div class="row row-cards">
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-{% else %}
-  <p>No events found.</p>
-{% endif %}
-</div>
-
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-{% endblock%}
-</body>
+  <br> -->

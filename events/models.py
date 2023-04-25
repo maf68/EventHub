@@ -52,11 +52,11 @@ class Event(models.Model):
 
 class MyUser(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)
-    nationality = CountryField()
-    address = models.CharField(max_length=300)
+    nationality = CountryField(blank = True)
+    address = models.CharField(blank = True, max_length=300)
     is_promoter = models.BooleanField(default=False)
-    bio = models.CharField(max_length=500, default="")
-    picture = models.ImageField(blank = True)
+    bio = models.CharField(max_length=500, default="", blank=True)
+    picture = models.URLField(blank = True)
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 

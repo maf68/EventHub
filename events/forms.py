@@ -7,7 +7,32 @@ from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from django.core.exceptions import ValidationError
 import re;
+from django.contrib.auth.hashers import make_password
 
+class MyUserForm(forms.ModelForm):
+        is_promoter = forms.ChoiceField(choices=((False, 'Normal User'), (True, 'Promoter')), label='User Type')
+        password = forms.CharField(widget=forms.PasswordInput, required=False, help_text="Leave empty to not change the password")
+        class Meta:
+            model = MyUser
+            fields = ['first_name', 'last_name', 'date_of_birth', 'nationality', 'address', 'is_promoter', 'bio', 'picture', 'password']
+            widgets = {
+                'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+                'nationality': forms.Select(attrs={'class': 'custom-select'}),
+                'address': forms.TextInput(attrs={'class': 'form-control'}),
+                'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+                'picture': forms.URLInput(attrs={'class': 'form-control'}),
+            }
+        def __init__(self, *args, **kwargs):
+            super(MyUserForm, self).__init__(*args, **kwargs)
+            self.fields['password'].widget.attrs.update({'class': 'form-control'})
+            self.fields['is_promoter'].widget.attrs.update({'class':'form-control'})
+        def clean_password(self):
+            password = self.cleaned_data.get('password')
+            if password:
+                return make_password(password)
+            else:
+                return self.instance.password
+ 
 class ReviewForm(forms.ModelForm):
     RATING_CHOICES = [
         (1, '1 - Poor'),
@@ -108,7 +133,7 @@ class CustomUserCreationForm(UserCreationForm):
         label=("Is Promoter"),
         required = False
     )
- 
+
     def validate_password(password1):
     # Check for a minimum length of 8 characters
         if len(password1) < 6:
