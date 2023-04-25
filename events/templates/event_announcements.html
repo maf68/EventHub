@@ -1,20 +1,25 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>{{event.title}} Announcements</title>
-  </head>
-  <body>
-    <h1>{{event.title}} Announcements</h1>
-    {% if announcements %}
-      <ul>
-        {% for Announcement in announcements %}
-        <li>{{ Announcement.title }}</li>
-        <li>{{ Announcement.description }}</li>
-        <li><img src="{{ Announcement.image }}" alt="{{ Announcement.title }}" style="width: 30%;"></li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No announcements for this event yet.</p>
-    {% endif %}
-  </body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock %}
+<head>
+  <title>{{event.title}} Announcements</title>
+</head>
+<body>
+  {% block content %}
+  <h1 class="h1">{{event.title}} Announcements</h1>
+  {% if announcements %}
+    <ul class="list-unstyled">
+      {% for Announcement in announcements %}
+      <li class="h3">{{ Announcement.title }}</li>
+      <li class="text-dark">{{ Announcement.description }}</li>
+      <li><img src="{{ Announcement.image }}" alt="{{ Announcement.title }}"  class="img-fluid rounded d-block" style="width:20%;"></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-dark">No announcements for this event yet.</p>
+  {% endif %}
+  {% endblock %}
+</body>

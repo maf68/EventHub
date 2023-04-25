@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" /> {% endblock %} {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" /> {% endblock %} 
 <h1>Event List</h1>
 
 <head>
@@ -15,7 +15,7 @@
   <form method="GET" action="{% url 'events:event_search' %}">
     <input type="text" name="q" placeholder="Search events">
     <button type="submit">Search</button>
-</form>
+  </form>
 
 <br />
 
@@ -66,6 +66,7 @@
 
   <br>
 
+  <div class="container-lg ">
   {% if object_list %}
     <div class="row row-cards">
       {% for event in object_list %}
@@ -88,6 +89,9 @@
 {% else %}
   <p>No events found.</p>
 {% endif %}
+</div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -95,7 +99,6 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js">
-
-{% endblock %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+{% endblock%}
 </body>

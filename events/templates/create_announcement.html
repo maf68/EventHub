@@ -1,4 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
 
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock %}
+{% block content %}
   <h1>Create Announcement</h1>
   <form method="post">
     {% csrf_token %}
@@ -17,3 +23,4 @@
     <input type="hidden" name="Event_id" value="{{Event.id }}">
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
+  {% endblock %}

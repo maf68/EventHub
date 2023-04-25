@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
+from eventhub.settings import BASE_URL
 
 def event_reviews(request, id):
     event = get_object_or_404(Event, id=id)
@@ -176,7 +177,7 @@ def edit_event(request, event_id):
         messages.warning(request, "You don't have permission to edit this event.")
         return redirect("/")
 
-
+#Redundant
 def homepage(request):
     allevents = Event.objects.all()
     query = request.GET.get('q')
@@ -203,7 +204,7 @@ def signup(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password) #authenticate username and password
             login(request, user) # login that user
-            return redirect('events:homepage') #take user to homepage
+            return redirect('events:event_list') #take user to homepage
         else:
             return render(request, 'events/signup.html', {'form': form}) #re render html page and display errors
     else:  # if method is a get
@@ -221,7 +222,7 @@ def login_(request):
             user = authenticate(request, username=username, password=password) #check if username and password in form match database
             if user is not None: #if match
                 login(request, user) # login user and redirect to homepage
-                return redirect('events:homepage')
+                return redirect('events:event_list')
             else:
                 error_message = 'Invalid login credentials. Please try again.' # if no match, invalid
         else:
@@ -234,7 +235,7 @@ def login_(request):
 def logout_(request):
     print("logout")
     logout(request)
-    return redirect('events:homepage')
+    return redirect('events:event_list')
 
 def myaccount_view(request):
     return render(request, 'events/myaccount.html', {
@@ -257,13 +258,10 @@ def get_event_announcements(request, Event_id):
     return render(request, 'event_announcements.html', context)
 
 #Create an announcement.
-@login_required
 def create_announcement(request, Event_id):
     event = get_object_or_404(Event, id=Event_id)
-
-    if request.MyUser != event.promoter:
-        return HttpResponseBadRequest("You're not authorized to create announcements for this event.")
-
+    if (request.user.is_authenticated == False) or (event.promoter != request.user):
+        return redirect(BASE_URL)
     if request.method == "POST":
         title = request.POST.get('title')
         description = request.POST.get('description')
@@ -284,8 +282,7 @@ def create_announcement(request, Event_id):
             send_mail(subject, message, from_email, recipient_list, fail_silently=True)
 
             #Needs to be updated to redirect to the url for the event details.
-            return render(request, 'Event_details.html', {'event': event})
-            #return HttpResponseRedirect(reverse('Event', args=[event.id]))
+            return redirect(BASE_URL)
     
     return render(request, 'create_announcement.html', {'event': event})
 

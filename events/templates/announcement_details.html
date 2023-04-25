@@ -1,4 +1,12 @@
-<h3>{{Announcement.title}}</h3>
-<p>Announcement for the event: {{Announcement.event}}</p>
-<p>{{Announcement.description}}</p>
-<img src= "{{Announcement.image}}" alt= "No images for this announcement." style= "width: 50%;">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock %}
+{% block content %}
+<h3 class="h1">{{Announcement.title}}</h3>
+<p class="h3">Announcement for the event: {{Announcement.event.title}}</p>
+<p class="text-dark">{{Announcement.description}}</p>
+<img src= "{{Announcement.image}}" alt= "No images for this announcement." class="img-fluid rounded d-block" style="width:30%;">
+{% endblock %}
