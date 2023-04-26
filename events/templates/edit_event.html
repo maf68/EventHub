@@ -1,6 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Event</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
+</head>
+<body>
 <h1>Edit Event</h1>
 <form method="POST">
-    {% csrf_token %} {{ form.as_p }}
+    {% csrf_token %}
+    <p> Title: {{form.title}} </p>
+    
+    <p>{% if form.title.errors %}</p>
+    {% for error in form.title.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}
+
+    <p> Description:</p>
+    <p class="descbox"> {{form.description}}</p>
+    
+    <p>{% if form.description.errors %}</p>
+    {% for error in form.description.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}
+
+    <p> City: {{form.city}} </p>
+    
+    <p>{% if form.city.errors %}</p>
+    {% for error in form.city.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}
+    <p> Location: {{form.location}} </p>
+    
+    <p>{% if form.location.errors %}</p>
+    {% for error in form.location.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}
+    <p> Date: {{form.date}} </p>
+    
+    <p>{% if form.date.errors %}</p>
+    {% for error in form.date.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}
+
+     {% comment %} <p> Poster: {{form.poster}} </p> {% endcomment %}
+    <p class="form-field"> Poster: {{form.poster}} </p>
+
+    <p>{% if form.poster.errors %}</p>
+    {% for error in form.poster.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}
+    <p> Duration: {{form.duration}} </p>
+
+    <p>{% if form.duration.errors %}</p>
+    {% for error in form.duration.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}
+
+      {% comment %} {{ form.as_p }}  {% endcomment %}
     <button type="submit">Save Changes</button>
 </form>
 
@@ -8,11 +73,13 @@
 <h2>Attendees</h2>
 <ul>
     {% for attendee in event.attendees.all %}
-    <li>{{ attendee.username }}</li>
+    <li class="bottom">{{ attendee.username }}</li>
     {% endfor %}
 </ul>
 {% else %}
-<p>No one has confirmed whether they will attend this event yet.</p>
+<p style="text-align: center;"> No one has confirmed whether they will attend this event yet.</p>
 {% endif %}
 
-<a href="/">Back to Homepage</a>
+<p style="text-align: center;"><a style="color: antiquewhite;" href="/">Back to Homepage </a></p>
+</body>
+</html>

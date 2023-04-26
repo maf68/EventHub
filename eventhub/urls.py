@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('search/', EventSearchView.as_view(), name='event_search'),
     path('filter/', EventFilterView.as_view(), name='event_filter'),
-        path("create_event/", create_event, name="create_event"),
+    path("create_event/", create_event, name="create_event"),
     path("edit_event/<int:event_id>/", edit_event, name="edit_event"),
     path('', include('events.urls')),
     

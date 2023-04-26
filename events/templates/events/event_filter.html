@@ -1,79 +1,87 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block head %}
-    {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% block title %}
+Filter Events
 {% endblock %}
 
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
+{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="text-center">Filter Events</h2>
-                    </div>
-                    <div class="card-body">
-                        <form method="get" action="{% url 'events:event_filter' %}">
-                            <div class="form-group">
-                                <label for="location">Location:</label>
-                                <select class="form-control" name="location" id="location">
-                                    <option value="">--Select Location--</option>
-                                    {% for city in cities %}
-                                        <option value="{{ city }}">{{ city }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="date">Date:</label>
-                                <input type="date" class="form-control" name="date" id="date" value="{{ date }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="duration">Duration:</label>
-                                <select class="form-control" name="duration" id="duration">
-                                    <option value="">--Select Duration--</option>
-                                    <option value="01:00:00">1 hour</option>
-                                    <option value="01:30:00">1 hour 30 minutes</option> 
-                                    <option value="02:00:00">2 hours</option>
-                                    <option value="02:30:00">2 hour 30 minutes</option> 
-                                    <option value="3:00:00">3+ hours</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="event_type">Event Type:</label>
-                                <select class="form-control" name="event_type" id="event_type">
-                                    <option value="">--Select Event Type--</option>
-                                    {% for event_type in event_types %}
-                                        <option value="{{ event_type }}">{{ event_type }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary">Filter</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-6">
-                {% if object_list %}
-                    <ul class="list-group">
-                        {% for event in object_list %}
-                            <li class="list-group-item">
-                                <h4>{{ event.title }}</h4>
-                                <p>{{ event.date }} - {{ event.city }} - {{ event.location }} - {{ event.event_type }}</p>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="text-center">No events found.</p>
-                {% endif %}
-            </div>
-        </div>
+
+<h1 class="filter-heading"><strong>Filter Events</strong></h1>
+<form method="get" action="{% url 'events:event_filter' %}" class="filter-form">
+    <div class="filter-item">
+        <label for="location">Location:</label>
+        <select name="location" id="location">
+            <option value="">--Select Location--</option>
+            {% for city in cities %}
+                <option value="{{ city }}">{{ city }}</option>
+            {% endfor %}
+        </select>
     </div>
 
+    <div class="filter-item">
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" value="{{ date }}">
+    </div>
+
+    <div class="filter-item">
+        <label for="duration">Duration:</label>
+        <select name="duration" id="duration">
+            <option value="">--Select Duration--</option>
+            <option value="01:00:00">1 hour</option>
+            <option value="01:30:00">1 hour 30 minutes</option> 
+            <option value="02:00:00">2 hours</option>
+            <option value="02:30:00">2 hour 30 minutes</option> 
+            <option value="3:00:00">3+ hours</option>
+        </select>
+    </div>
+
+    <div class="filter-item">
+        <label for="event_type">Event Type:</label>
+        <select name="event_type" id="event_type">
+            <option value="">--Select Event Type--</option>
+            {% for event_type in event_types %}
+                <option value="{{ event_type }}">{{ event_type }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="filter-button">Filter</button>
+</form>
+
+{% if object_list %}
+    <div class="card-container event-list">
+      {% for event in object_list %}
+     
+        <div class="col-md-3">
+          <div class="event-card">
+            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
+            <a href="{% url 'events:event_list' %}"> 
+            <div class="event-title">{{ event.title }}</div>
+        </a>
+            <div class="event-details">
+                <div class="event-date">{{ event.date }} -</div>
+                <div class="event-location">{{ event.location }} -</div>
+                <div class="event-city">{{ event.city }}  </div>
+                <div class="event-promoter"> - {{ event.promoter }}</div>                      
+              </div>
+          </div>
+        </div>
+    
+        {% if forloop.counter|divisibleby:4 %}
+            </div><div class="event-list" style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+            flex-wrap: wrap;
+            justify-content: space-between" >
+        {% endif %}
+      {% endfor %}
+    </div>
+    </div>
+{% else %}
+    <p class="no-events">No events found.</p>
+{% endif %}
 {% endblock %}

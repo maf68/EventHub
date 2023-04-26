@@ -11,45 +11,56 @@
 </head>
 <title>{% block title %}Eventhub - Your One-Stop Event Planning Destination{% endblock %}</title>
 <body>
-{%block content %}
-  <!--
-  <div class="row justify-content-center">
-  <div id="carouselExample" class="carousel slide" data-ride="carousel"  style="width: 30%; height: 400px;">
+{% block carousel %}
+<div class="container-fluid bg-secondary">
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <p class="h1 m-3 text-light">Welcome {% if user.is_authenticated %}{{user.username}}{% else %}Guest{% endif %}</p>
+  </div>
+</div>
+<div class="row mx-n5">
+  <div class="col-sm-12 mx-0">
+  <div id="carouselExample" class="carousel slide" data-ride="carousel"  style="width: 100%; height: auto;">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExample" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExample" data-slide-to="1"></li>
+      <li data-target="#carouselExample" data-slide-to="2"></li>
+    </ol>
     <div class="carousel-inner">
-      <div class="carousel-item active">
+      <div class="carousel-item active" data-interval="5000">
         <div style="background-image: url('/static/media/event1background.png'); background-size: cover; background-position: center center; height: 100%;">
-          <a href="#"><img class="d-block w-100 img-fluid" src="/static/media/event1.png" alt="Upcoming Event 1"></a>
+          <a href="#"><img class="d-block w-100" style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event1.png" alt="Upcoming Event 1"></a>
         </div>
       </div>
-      <div class="carousel-item">
-        <a href="#"><img class="d-block w-100" src="/static/media/event2.png" alt="Upcoming Event 2"></a>
+      <div class="carousel-item" data-interval="5000">
+        <div style="background-image: url('/static/media/event2background.png'); background-size: cover; background-position: center center; height: 100%;">
+        <a href="#"><img class="d-block w-100" style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event2.png" alt="Upcoming Event 2"></a>
       </div>
-      <div class="carousel-item">
-        <a href="#"><img class="d-block w-100" src="/static/media/event3.png" alt="Upcoming Event 3"></a>
+      </div>
+      <div class="carousel-item" data-interval="5000">
+        <div style="background-image: url('/static/media/event3background.png'); background-size: cover; background-position: center center; height: 100%;">
+        <a href="#"><img class="d-block w-100"  style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event3.png" alt="Upcoming Event 3"></a>
+      </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
   </div>
--->
+  </div>
+</div>
+
+{% endblock %}
+{%block content %}
   {% if object_list %}
-    <div class="row justify-content-center m-1">
+    <div class="row justify-content-center m-3">
       {% for event in object_list %}
-        <div class="col-md-3 col-sm-4 ">
-          <div class="card h-100">
-            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
+        <div class="col-md-3 col-sm-4">
+          <div class="card">
+            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
               <div class="card-body">
-                <h5 class="card-title">{{ event.title }}</h5>
+                <h5 class="card-title"><a class="text-dark" href="#">{{ event.title }}</a></h5>
                 <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
-                <p class="card-text">{{ event.description }}</p>
-                <a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>
+                <!--<p class="card-text">{{ event.description }}</p>-->
+                <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
               </div>
             </div>
           {% if forloop.counter|divisibleby:4 %}
@@ -67,7 +78,6 @@
 </body>
 
 <!-- <h1>Event List</h1>
-
   <form method="GET" action="{% url 'events:event_search' %}">
     <input type="text" name="q" placeholder="Search events">
     <button type="submit">Search</button>
@@ -95,13 +105,14 @@
       <div class="col">
         <label for="duration">Duration:</label>
         <select name="duration" id="duration" class="form-select">
-          <option value="">--Select Duration--</option>
+          <option value="">Select Duration</option>
           <option value="01:00:00">1 hour</option>
           <option value="01:30:00">1 hour 30 minutes</option> 
           <option value="02:00:00">2 hours</option>
           <option value="02:30:00">2 hour 30 minutes</option> 
           <option value="3:00:00">3+ hours</option>
         </select>
+        
       </div>
 
       <div class="col">

@@ -11,10 +11,64 @@
     <h1>Create Event</h1>
     <form method="post">
       {% csrf_token %}
-      <table>
+      {% comment %} <table>
         {{ form.as_table }}
-      </table>
-      <input type="submit" value="Create Event" />
+      </table>  {% endcomment %}
+      <p> Title: {{form.title}} </p>
+    
+      <p>{% if form.title.errors %}</p>
+      {% for error in form.title.errors %}
+      <p class="errors"> {{error}} </p>
+      {% endfor %}
+      {% endif %}
+  
+      <p> Description:</p>
+      <p class="descbox"> {{form.description}}</p>
+      
+      <p>{% if form.description.errors %}</p>
+      {% for error in form.description.errors %}
+      <p class="errors"> {{error}} </p>
+      {% endfor %}
+      {% endif %}
+  
+      <p> City: {{form.city}} </p>
+      
+      <p>{% if form.city.errors %}</p>
+      {% for error in form.city.errors %}
+      <p class="errors"> {{error}} </p>
+      {% endfor %}
+      {% endif %}
+      <p> Location: {{form.location}} </p>
+      
+      <p>{% if form.location.errors %}</p>
+      {% for error in form.location.errors %}
+      <p class="errors"> {{error}} </p>
+      {% endfor %}
+      {% endif %}
+      <p> Date: {{form.date}} </p>
+      
+      <p>{% if form.date.errors %}</p>
+      {% for error in form.date.errors %}
+      <p class="errors"> {{error}} </p>
+      {% endfor %}
+      {% endif %}
+  
+      <p class="form-field"> Poster: {{form.poster}} </p>
+  
+      <p>{% if form.poster.errors %}</p>
+      {% for error in form.poster.errors %}
+      <p class="errors"> {{error}} </p>
+      {% endfor %}
+      {% endif %}
+      <p> Duration: {{form.duration}} </p>
+  
+      <p>{% if form.duration.errors %}</p>
+      {% for error in form.duration.errors %}
+      <p class="errors"> {{error}} </p>
+      {% endfor %}
+      {% endif %}  
+          {% comment %} {{ form.as_p }}  {% endcomment %}
+      <button type="submit">Create Event</button>
     </form>
   </body>
 </html>
