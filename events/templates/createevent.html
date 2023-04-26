@@ -11,9 +11,9 @@
     <h1>Create Event</h1>
     <form method="post">
       {% csrf_token %}
-      {% comment %} <table>
+      <!-- <table>
         {{ form.as_table }}
-      </table>  {% endcomment %}
+      </table> -->
       <p> Title: {{form.title}} </p>
     
       <p>{% if form.title.errors %}</p>
@@ -67,7 +67,7 @@
       <p class="errors"> {{error}} </p>
       {% endfor %}
       {% endif %}  
-          {% comment %} {{ form.as_p }}  {% endcomment %}
+       <!-- {{ form.as_p }} -->
       <button type="submit">Create Event</button>
     </form>
   </body>

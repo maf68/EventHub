@@ -37,7 +37,7 @@ p {
   color: white;
 }
 
-input[type="text"], input[type="password"], input[type="date"], input[type="email"] {
+input[type="text"], input[type="password"], input[type="date"], input[type="email"]{
   display: block;
   width: 100%;
   padding: 10px;
@@ -78,3 +78,8 @@ button[type="submit"]:hover {
 .errors{
   color: rgb(228, 204, 172);
 }
+/* .descbox{
+    display: block;
+    margin-top: 0; 
+    padding-top: 0; 
+  } */
