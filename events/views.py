@@ -352,3 +352,25 @@ def settings_(request):
             form = MyUserForm(instance=user)
         return render(request, 'settings.html', {'form': form})
     return redirect("/")
+
+def follow_event(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    user = request.user
+    if user.is_authenticated:
+        event.following.add(user)
+        event.save()
+        return redirect("/")
+    else:
+        # Do something like redirect to the login page
+        return redirect("/")
+
+def followed_events(request):
+    # Get the current user
+    user = request.user
+    
+    # Get all the events the user is following
+    followed_events = Event.objects.filter(following__in=[user])
+    
+    # Render the events using a template
+    context = {'followed_events': followed_events}
+    return render(request, 'followed_events.html', context)

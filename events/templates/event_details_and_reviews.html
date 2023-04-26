@@ -7,8 +7,9 @@
         <div class="col md-8">
             <h1>{{ event.title }}</h1>
             <h6 style="color: white;">Organized by: {{event.promoter}}</h6>
-            <a type="button" class="btn btn-outline-light m-3" href="{% url 'events:event_announcements' Event_id=event.id %}">Event announcements</a>
-            <a type = "button" class="btn btn-outline-light m-3 {% if event.promoter.username != user.username %}d-none{% endif %}" href="{% url 'events:create_announcement' Event_id=event.id %}">Create Announcement</a>
+            <a type="button" class="btn btn-outline-light m-3 p-2" href="{% url 'events:event_announcements' Event_id=event.id %}">Event announcements</a>
+            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username != user.username %}d-none{% endif %}" href="{% url 'events:create_announcement' Event_id=event.id %}">Create Announcement</a>
+            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username == user.username %}d-none{% endif %}" href="{% url 'events:follow' event_id=event.id %}">Follow the Event</a>
             <div class="accordion" id="accordionExample">
               <div class="card bg-secondary">
                 <div class="card-header" id="headingOne">
