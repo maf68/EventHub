@@ -1,25 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-{% endblock %}
 <head>
-  <title>{{event.title}} Announcements</title>
+  <title>{% block title %}{{event.title}}'s' Announcements{% endblock %}</title>
 </head>
 <body>
   {% block content %}
-  <h1 class="h1 m-3">{{event.title}} Announcements</h1>
+  <h1 class="h1 text-light m-3">{{event.title}} Announcements</h1>
   {% if announcements %}
     <ul class="list-unstyled m-3">
       {% for Announcement in announcements %}
-      <li><a class="text-dark" href="{% url 'events:announcement_by_id' Announcement_id=Announcement.id %}">{{ Announcement.title }}</a></li>
-      <li class="text-dark">{{ Announcement.description }}</li>
+      <li><a class="text-light" href="{% url 'events:announcement_by_id' Announcement_id=Announcement.id %}">{{ Announcement.title }}</a></li>
+      <li class="text-light">{{ Announcement.description }}</li>
       <li><img src="{{ Announcement.image }}" alt="{{ Announcement.title }}"  class="img-fluid rounded d-block" style="width:20%;"></li>
       {% endfor %}
     </ul>
   {% else %}
-    <p class="text-dark">No announcements for this event yet.</p>
+    <p class="text-dark m-3">No announcements for this event yet.</p>
   {% endif %}
   {% endblock %}
 </body>

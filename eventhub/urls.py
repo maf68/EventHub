@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from events.views import EventSearchView
 from events.views import EventFilterView
-from events.views import create_event, homepage, edit_event
+from events.views import create_event, edit_event
 
 urlpatterns = [
     path('admin/', admin.site.urls),

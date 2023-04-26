@@ -191,24 +191,7 @@ def edit_event(request, event_id):
     else:
         messages.warning(request, "You don't have permission to edit this event.")
         return redirect("/")
-
-
-def homepage(request):
-    allevents = Event.objects.all()
-    query = request.GET.get('q')
-    if query:
-        events = Event.objects.filter(
-            Q(title__icontains=query) |
-            Q(description__icontains=query) |
-            Q(city__icontains=query) |
-            Q(location__icontains=query) |
-            Q(event_type__icontains=query)
-        )
-    else:
-        events = Event.objects.none()
-
-    return render(request, '', {'user': MyUser, 'events': events, 'query': query, 'allevents': allevents})
-
+    
 def signup(request):
     if request.method == 'POST': 
         form = CustomUserCreationForm(request.POST, request.FILES) # create a form containing data inputted by the user
@@ -219,7 +202,7 @@ def signup(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password) #authenticate username and password
             login(request, user) # login that user
-            return redirect('events:homepage') #take user to homepage
+            return redirect('/') #take user to homepage
         else:
             return render(request, 'events/signup.html', {'form': form}) #re render html page and display errors
     else:  # if method is a get
@@ -237,7 +220,7 @@ def login_(request):
             user = authenticate(request, username=username, password=password) #check if username and password in form match database
             if user is not None: #if match
                 login(request, user) # login user and redirect to homepage
-                return redirect('events:homepage')
+                return redirect('/')
             else:
                 error_message = 'Invalid login credentials. Please try again.' # if no match, invalid
         else:
@@ -250,7 +233,7 @@ def login_(request):
 def logout_(request):
     print("logout")
     logout(request)
-    return redirect('events:homepage')
+    return redirect('/')
 
 def myaccount_view(request):
     return render(request, 'events/myaccount.html', {
@@ -283,7 +266,7 @@ def event_details_and_reviews(request, event_id):
             return render(request, 'event_details_and_reviews.html', context)
     else:
         form = ReviewForm()
-        context = {'event': event, 'reviews': reviews, 'form': form}
+        context = {'event': event, 'reviews': reviews, 'form': form, 'user':request.user}
 
     # If the updated reviews list is included in the query parameters,
     # retrieve the updated reviews list and include it in the context
