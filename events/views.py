@@ -276,7 +276,7 @@ def event_details_and_reviews(request, event_id):
                 review.user = MyUser.objects.get_or_create(username=settings.ANONYMOUS_USER_NAME)[0] # assign the anonymous user to the review    
             review.comment = form.cleaned_data['comment']
             review.save()
-            reviews_url = reverse('events:event_details_and_reviews', args=[event.id]) + '?reviews=1'
+            reviews_url = reverse('events:event_details_and_reviews.html', args=[event.id]) + '?reviews=1'
             return redirect(reviews_url)
         else:
             context = {'event': event, 'reviews': reviews, 'form': form, 'form_errors': form.errors}

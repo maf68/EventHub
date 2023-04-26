@@ -7,6 +7,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    {% block head %} {% endblock %}
    <!--<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">-->
 </head>
 
@@ -24,13 +25,12 @@
                 <div class="navbar-nav">
                     <!-- <a class="nav-link active" href="{% url 'events:event_list' %}">All Events</a>-->
                     <!--<a class="nav-link active text-light" href="{% url 'events:event_search' %}">Search Events</a>-->
-                    <!--<a class="nav-link active text-light" href="{% url 'events:event_filter' %}">Filter Events</a>-->
-                    <!--<a class="nav-link active text-light" href="{% url 'events:event_reviews' id=1 %}">Event Reviews</a>-->                  
+                    <!--<a class="nav-link active text-light" href="{% url 'events:event_filter' %}">Filter Events</a>-->                
                     <a class="nav-link active text-light {% if not user.is_promoter %}d-none{% endif %}" href="{% url 'create_event' %}">Create Event</a>
                     <a class="nav-link active text-light {% if not user.is_authenticated %}d-none{% endif %}" href="">Followed Events</a>
                 </div>
                 </div>            
-                <form method="GET" class="input-group col-md-3 col-sm-4" action="{% url 'events:event_search' %}">
+                <form method="GET" class="input-group col-md-3 col-sm-4" action="{% url 'events:event_filter' %}">
                     <input type="text" class="form-control" name="q" placeholder="Search events">
                     <button type="submit" class="btn btn-outline-light btn-addon-2">Search</button>
                 </form>

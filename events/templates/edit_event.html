@@ -1,12 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>Create Event</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
-</head>
+{% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
+<title>{% block title %}Edit Event{% endblock %}</title>
 <body>
+{% block content%}
 <h1>Edit Event</h1>
 <form method="POST">
     {% csrf_token %}
@@ -81,5 +76,6 @@
 {% endif %}
 
 <p style="text-align: center;"><a style="color: antiquewhite;" href="/">Back to Homepage </a></p>
+{% endblock %}
 </body>
 </html>
