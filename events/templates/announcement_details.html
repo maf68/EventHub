@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock %}
+{% block content %}
+<h3 class="h1 m-3">{{Announcement.title}}</h3>
+<p class="h3 m-3">Announcement for the event: {{Announcement.event.title}}</p>
+<p class="text-dark m-3">{{Announcement.description}}</p>
+<img src= "{{Announcement.image}}" alt= "No images for this announcement." class="img-fluid rounded d-block m-3" style="width:30%;">
+{% endblock %}

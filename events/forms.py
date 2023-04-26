@@ -1,18 +1,71 @@
 from django import forms
+from .models import Review
 from django.forms.widgets import TextInput
 from events.models import Event, MyUser
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+from django.core.exceptions import ValidationError
+import re;
+from django.contrib.auth.hashers import make_password
 
+class MyUserForm(forms.ModelForm):
+        is_promoter = forms.ChoiceField(choices=((False, 'Normal User'), (True, 'Promoter')), label='User Type')
+        password = forms.CharField(widget=forms.PasswordInput, required=False, help_text="Leave empty to not change the password")
+        class Meta:
+            model = MyUser
+            fields = ['first_name', 'last_name', 'date_of_birth', 'nationality', 'address', 'is_promoter', 'bio', 'picture', 'password']
+            widgets = {
+                'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+                'nationality': forms.Select(attrs={'class': 'custom-select'}),
+                'address': forms.TextInput(attrs={'class': 'form-control'}),
+                'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+                'picture': forms.URLInput(attrs={'class': 'form-control'}),
+            }
+        def __init__(self, *args, **kwargs):
+            super(MyUserForm, self).__init__(*args, **kwargs)
+            self.fields['password'].widget.attrs.update({'class': 'form-control'})
+            self.fields['is_promoter'].widget.attrs.update({'class':'form-control'})
+        def clean_password(self):
+            password = self.cleaned_data.get('password')
+            if password:
+                return make_password(password)
+            else:
+                return self.instance.password
+ 
+class ReviewForm(forms.ModelForm):
+    RATING_CHOICES = [
+        (1, '1 - Poor'),
+        (2, '2 - Fair'),
+        (3, '3 - Average'),
+        (4, '4 - Good'),
+        (5, '5 - Excellent')
+    ]
+    rating = forms.ChoiceField(choices=RATING_CHOICES, widget=forms.RadioSelect) 
+    comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}), max_length=500)
 
+    class Meta:
+        model = Review
+        fields = ('rating', 'comment',)
+    
+    def clean_rating(self):
+        rating = self.cleaned_data['rating']
+        if int(rating) not in [choice[0] for choice in self.RATING_CHOICES]:
+            raise forms.ValidationError("Invalid rating value")
+        return rating
+    
+    def clean_comment(self):
+        comment = self.cleaned_data['comment']
+        if not comment:
+            raise forms.ValidationError("Comment cannot be empty")
+        return comment
+    
 class DurationInput(TextInput):
     input_type = 'duration'
 
 class EventForm(forms.ModelForm):
     duration = forms.DurationField(widget=DurationInput)
-    
-    
+
     class Meta:
         model = Event
         fields = [
@@ -24,7 +77,6 @@ class EventForm(forms.ModelForm):
             "poster",
             "duration"
         ]
-        
 
         labels = {
             "title": "Title",
@@ -35,6 +87,7 @@ class EventForm(forms.ModelForm):
             "poster": "Poster",
             "duration": "Duration"
         }
+
 
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, help_text='*')
@@ -80,7 +133,7 @@ class CustomUserCreationForm(UserCreationForm):
         label=("Is Promoter"),
         required = False
     )
- 
+
     def validate_password(password1):
     # Check for a minimum length of 8 characters
         if len(password1) < 6:
