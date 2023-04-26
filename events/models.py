@@ -56,7 +56,7 @@ class MyUser(AbstractUser):
     address = models.CharField(blank = True, max_length=300)
     is_promoter = models.BooleanField(default=False)
     bio = models.CharField(max_length=500, default="", blank=True)
-    picture = models.URLField(blank = True)
+    picture = models.URLField(blank = True, null=True)
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 

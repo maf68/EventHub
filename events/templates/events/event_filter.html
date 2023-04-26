@@ -11,6 +11,7 @@ Filter Events
 {% endblock %}
 
 {% block content %}
+
 <h1 class="filter-heading"><strong>Filter Events</strong></h1>
 <form method="get" action="{% url 'events:event_filter' %}" class="filter-form">
     <div class="filter-item">
@@ -83,5 +84,4 @@ Filter Events
 {% else %}
     <p class="no-events">No events found.</p>
 {% endif %}
-
 {% endblock %}

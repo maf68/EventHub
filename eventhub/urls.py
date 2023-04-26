@@ -28,6 +28,8 @@ urlpatterns = [
     path("create_event/", create_event, name="create_event"),
     path("edit_event/<int:event_id>/", edit_event, name="edit_event"),
     path('', include('events.urls')),
+    
 ]
+#path('events/<int:pk>/reviews/', ReviewListView.as_view(), name='event_reviews'),
     #path('events/', include('events.urls')),
     #path('events/search/', include('events.urls', namespace='events')),
