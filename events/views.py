@@ -28,7 +28,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from eventhub.settings import BASE_URL
-
+from django.forms import ValidationError;
 
 
 # def event_reviews(request, id):
@@ -185,6 +185,14 @@ def edit_event(request, event_id):
                 return redirect("/")
             else:
                 messages.error(request, "Please correct the errors below.")
+                #try:
+                    #form.clean_duration()
+                #except ValidationError as e:
+                    #context = {
+                    #'form': form,
+                    #'error_message': str(e),
+                    #}
+                #return render(request, 'create_event.html', context=context)
         else:
             form = EventForm(instance=event)
         return render(request, "edit_event.html", {"form": form, "event": event})

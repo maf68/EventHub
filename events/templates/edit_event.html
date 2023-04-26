@@ -1,9 +1,12 @@
-{% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
+{% extends "base.html" %} {% load static %} {% block head %} {{ block.super }} {% endblock %}
 <title>{% block title %}Edit Event{% endblock %}</title>
 <body>
 {% block content%}
-<h1>Edit Event</h1>
-<form method="POST">
+<div class="row justify-content-center">
+<h1 class="h1 text-light m-3">Edit Event</h1>
+</div>
+<div class="row justify-content-center">
+<form method="POST" class="text-light m-3">
     {% csrf_token %}
     <p> Title: {{form.title}} </p>
     
@@ -45,7 +48,7 @@
     {% endif %}
 
     <!-- <p> Poster: {{form.poster}} </p> -->
-    <p class="form-field"> Poster: {{form.poster}} </p>
+    <p> Poster: {{form.poster}} </p>
 
     <p>{% if form.poster.errors %}</p>
     {% for error in form.poster.errors %}
@@ -57,13 +60,16 @@
     <p>{% if form.duration.errors %}</p>
     {% for error in form.duration.errors %}
     <p class="errors"> {{error}} </p>
+    <!--<span class="error-message">{{ error_message }}</span>-->
     {% endfor %}
     {% endif %}
 
      <!-- {{ form.as_p }} -->
-    <button type="submit">Save Changes</button>
+     <div class="row justify-content-center">
+    <button type="submit" class="btn btn-outline-light">Save Changes</button>
+    </div>
 </form>
-
+</div>
 {% if event.attendees.count > 0 %}
 <h2>Attendees</h2>
 <ul>
@@ -72,10 +78,11 @@
     {% endfor %}
 </ul>
 {% else %}
-<p style="text-align: center;"> No one has confirmed whether they will attend this event yet.</p>
+<p style="text-align: center;" class="text-light"> No one has confirmed whether they will attend this event yet.</p>
 {% endif %}
 
 <p style="text-align: center;"><a style="color: antiquewhite;" href="/">Back to Homepage </a></p>
+
 {% endblock %}
 </body>
 </html>
