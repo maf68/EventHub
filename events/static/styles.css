@@ -37,7 +37,7 @@ p {
   color: white;
 }
 
-input[type="text"], input[type="password"], input[type="date"], input[type="email"] {
+input[type="text"], input[type="password"], input[type="date"], input[type="email"]{
   display: block;
   width: 100%;
   padding: 10px;

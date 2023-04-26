@@ -95,7 +95,7 @@ class CustomUserCreationForm(UserCreationForm):
     date_of_birth = forms.CharField(max_length=30, required=True, help_text='*')
     nationality = CountryField().formfield()
     bio = forms.CharField(max_length=200)
-    picture = forms.ImageField(required=False)
+    picture = forms.URLInput()
     password1 = forms.CharField(
         label=("Password"),
         strip=False,
@@ -133,7 +133,9 @@ class CustomUserCreationForm(UserCreationForm):
         label=("Is Promoter"),
         required = False
     )
-
+    def __init__(self, *args, **kwargs):
+            super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+            self.fields['picture'].widget.attrs.update({'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'})
     def validate_password(password1):
     # Check for a minimum length of 8 characters
         if len(password1) < 6:
