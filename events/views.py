@@ -140,7 +140,7 @@ def create_event(request):
 
 
 def edit_event(request, event_id):
-    # Check if the user is authenticated and is a promoter
+    # Check if the user is authenticated and is 1a promoter
     if request.user.is_authenticated and request.user.is_promoter:
         event = get_object_or_404(Event, id=event_id, promoter=request.user)
         if request.method == "POST":
@@ -185,7 +185,7 @@ def signup(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password) #authenticate username and password
             login(request, user) # login that user
-            return redirect('events:homepage') #take user to homepage
+            return redirect('/') #take user to homepage
         else:
             return render(request, 'events/signup.html', {'form': form}) #re render html page and display errors
     else:  # if method is a get
@@ -203,7 +203,7 @@ def login_(request):
             user = authenticate(request, username=username, password=password) #check if username and password in form match database
             if user is not None: #if match
                 login(request, user) # login user and redirect to homepage
-                return redirect('events:homepage')
+                return redirect('/')
             else:
                 error_message = 'Invalid login credentials. Please try again.' # if no match, invalid
         else:
@@ -216,9 +216,9 @@ def login_(request):
 def logout_(request):
     print("logout")
     logout(request)
-    return redirect('events:homepage')
+    return redirect('/')
 
 def myaccount_view(request):
-    return render(request, 'events/myaccount.html', {
+    return render(request, 'templates/myaccount.html', {
         'user': MyUser
     })

@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" /> {% endblock %} {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" /> {% endblock %} {% block content %}
 <h1>Event List</h1>
 
 <form method="GET" action="{% url 'events:event_search' %}">
@@ -40,7 +40,7 @@
     {% for event in object_list %}
     <li>
         {{ event.title }} - {{ event.date }} - {{ event.city }} - {{ event.location }} - {{ event.event_type }} -
-        <a href="{% url 'edit_event' event_id=event.id%}">Edit Event</a>
+        <a href="{% url 'events:edit_event' event_id=event.id%}">Edit Event</a>
     </li>
     {% endfor %}
 </ul>

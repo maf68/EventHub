@@ -1,0 +1,161 @@
+body{
+  /* background-image: url(./pic.png); */
+}
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  margin-right: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 26px;
+  font-family: sans-serif;
+}
+
+.filter-item label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+select,
+input[type="date"] {
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 200px;
+}
+
+select:focus,
+input[type="date"]:focus {
+  border-color: #4CAF50;
+}
+
+select option {
+  font-size: 16px;
+}
+
+.filter-button {
+  margin-left: auto;
+  margin-top: 10px;
+  display: block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: navy;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.filter-button:hover {
+  background-color: blue
+}
+
+
+.event-list {
+  display: flex ;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* margin: 100px,100px,10px,10px; */
+  }
+ 
+  .event-list .col-md-3 {
+  flex: 1 0 23%;
+  max-width: 23%;
+  margin: 0;
+  } 
+  
+  .event-card {
+  display: flex;
+  flex-direction: column ;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  height: 100%;
+  width: 100%;
+  margin-bottom: 20px;
+  border-color: black;
+  border-radius: 10px;
+  
+  }
+  
+  .event-card .card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: fill;
+  
+  }
+  
+  .event-card .event-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 0 15px;
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  }
+  
+   .event-card .event-details {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 15px;
+  margin-top: 10px;
+  }
+  
+  /* .event-card .event-details > div {
+  margin-right: 10px;
+  font-size: 14px;
+  color: #666;
+  } */
+/*   
+  .event-card .event-details .event-date:before {
+  content: "\f073";
+  font-family: FontAwesome;
+  margin-right: 5px;
+  }
+  
+  .event-card .event-details .event-location:before {
+  content: "\f3c5";
+  font-family: FontAwesome;
+  margin-right: 5px;
+  font-size: 22px;
+  }
+  
+  .event-card .event-details .event-city:before {
+  content: "\f64f";
+  font-family: FontAwesome;
+  margin-right: 5px;
+  font-size: 22px;
+  }
+   */
+  .event-card .event-details {
+  /* content: "\f1fe"; */
+  font-family: FontAwesome;
+  margin-right: 5px;
+  font-size: 22px;
+  
+  /* margin-top: auto; */
+  }
+  
+  .no-events {
+  font-size: 18px;
+  text-align: center;
+  margin: 50px 0;
+  font-size: 22px;
+  }
+  h1{
+    font-size: 40px;
+    font-family: sans-serif;
+  }
+  

@@ -11,7 +11,8 @@ class DurationInput(TextInput):
 
 class EventForm(forms.ModelForm):
     duration = forms.DurationField(widget=DurationInput)
-
+    
+    
     class Meta:
         model = Event
         fields = [
@@ -23,6 +24,7 @@ class EventForm(forms.ModelForm):
             "poster",
             "duration"
         ]
+        
 
         labels = {
             "title": "Title",
