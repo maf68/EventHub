@@ -2,6 +2,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
+from .models import Event, Review, MyUser
+from .forms import ReviewForm
+from django.urls import reverse
+from django.contrib import messages
+from .forms import EventForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login,authenticate,logout
+from .forms import CustomUserCreationForm
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import TemplateView, ListView
+from django.db.models import Q
+from datetime import datetime, timedelta
 from .models import Event, Review, MyUser, Announcement
 from .forms import ReviewForm, MyUserForm
 from django.urls import reverse
@@ -16,36 +29,38 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from eventhub.settings import BASE_URL
 
-def event_reviews(request, id):
-    event = get_object_or_404(Event, id=id)
-    reviews = Review.objects.filter(event=event).order_by('-created_at')
-    context = {'event': event, 'reviews': reviews}
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.event = event
-            review.user = request.user
-            review.comment = form.cleaned_data['comment']
-            review.save()
-            reviews_url = reverse('events:event_reviews', args=[event.id]) + '?reviews=1'
-            return redirect(reviews_url)
-            # return redirect('events:event_reviews', event.id)
-        
-        else:
-            context['form'] = form
-            context['form_errors'] = form.errors
-    else:
-        form = ReviewForm()
-        context['form'] = form 
 
-    # If the updated reviews list is included in the query parameters,
-    # retrieve the updated reviews list and include it in the context
-    if 'reviews' in request.GET:
-        updated_reviews = Review.objects.filter(event=event).order_by('-created_at')
-        context['reviews'] = updated_reviews
+
+# def event_reviews(request, id):
+#     event = get_object_or_404(Event, id=id)
+#     reviews = Review.objects.filter(event=event).order_by('-created_at')
+#     context = {'event': event, 'reviews': reviews}
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST)
+#         if form.is_valid():
+#             review = form.save(commit=False)
+#             review.event = event
+#             review.user = request.user
+#             review.comment = form.cleaned_data['comment']
+#             review.save()
+#             reviews_url = reverse('events:event_reviews', args=[event.id]) + '?reviews=1'
+#             return redirect(reviews_url)
+#             # return redirect('events:event_reviews', event.id)
         
-    return render(request, 'events/event_reviews.html', context)
+#         else:
+#             context['form'] = form
+#             context['form_errors'] = form.errors
+#     else:
+#         form = ReviewForm()
+#         context['form'] = form 
+
+#     # If the updated reviews list is included in the query parameters,
+#     # retrieve the updated reviews list and include it in the context
+#     if 'reviews' in request.GET:
+#         updated_reviews = Review.objects.filter(event=event).order_by('-created_at')
+#         context['reviews'] = updated_reviews
+        
+#     return render(request, 'events/event_reviews.html', context)
 
 
 class EventListView(ListView):
@@ -62,7 +77,7 @@ class EventListView(ListView):
                 Q(description__icontains=query) |
                 Q(city__icontains=query) |
                 Q(location__icontains=query) |
-                Q(promoter__username__icontains=query) |
+                Q(promoter_username_icontains=query) |
                 Q(event_type__icontains=query)
             )
         return queryset
@@ -71,7 +86,6 @@ class EventListView(ListView):
         context['cities'] = Event.objects.order_by().values_list('city', flat=True).distinct()
         context['event_types'] = self.model.objects.order_by().values_list('event_type', flat=True).distinct()
         context['locations'] = Event.objects.values_list('city', flat=True).distinct()
-        context['user'] = self.request.user
         return context
 
 class EventSearchView(ListView):
@@ -178,7 +192,7 @@ def edit_event(request, event_id):
         messages.warning(request, "You don't have permission to edit this event.")
         return redirect("/")
 
-#Redundant
+
 def homepage(request):
     allevents = Event.objects.all()
     query = request.GET.get('q')
@@ -205,7 +219,7 @@ def signup(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password) #authenticate username and password
             login(request, user) # login that user
-            return redirect('events:event_list') #take user to homepage
+            return redirect('events:homepage') #take user to homepage
         else:
             return render(request, 'events/signup.html', {'form': form}) #re render html page and display errors
     else:  # if method is a get
@@ -223,7 +237,7 @@ def login_(request):
             user = authenticate(request, username=username, password=password) #check if username and password in form match database
             if user is not None: #if match
                 login(request, user) # login user and redirect to homepage
-                return redirect('events:event_list')
+                return redirect('events:homepage')
             else:
                 error_message = 'Invalid login credentials. Please try again.' # if no match, invalid
         else:
@@ -236,12 +250,49 @@ def login_(request):
 def logout_(request):
     print("logout")
     logout(request)
-    return redirect('events:event_list')
+    return redirect('events:homepage')
 
 def myaccount_view(request):
     return render(request, 'events/myaccount.html', {
         'user': MyUser
     })
+# def event_detail(request, event_id):
+#     event = get_object_or_404(Event, id=event_id)
+#     return render(request, 'event_detail.html', {'event': event})
+
+
+def event_details_and_reviews(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    reviews = Review.objects.filter(event=event).order_by('-created_at')
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.event = event
+            if request.user.is_authenticated:
+                review.user = request.user
+            else:
+                review.user = MyUser.objects.get_or_create(username=settings.ANONYMOUS_USER_NAME)[0] # assign the anonymous user to the review    
+            review.comment = form.cleaned_data['comment']
+            review.save()
+            reviews_url = reverse('events:event_details_and_reviews', args=[event.id]) + '?reviews=1'
+            return redirect(reviews_url)
+        else:
+            context = {'event': event, 'reviews': reviews, 'form': form, 'form_errors': form.errors}
+            return render(request, 'event_details_and_reviews.html', context)
+    else:
+        form = ReviewForm()
+        context = {'event': event, 'reviews': reviews, 'form': form}
+
+    # If the updated reviews list is included in the query parameters,
+    # retrieve the updated reviews list and include it in the context
+    if 'reviews' in request.GET:
+        updated_reviews = Review.objects.filter(event=event).order_by('-created_at')
+        context['reviews'] = updated_reviews
+
+    return render(request, 'event_details_and_reviews.html', context)
+
 
 #Display all announcements for an event
 def get_event_announcements(request, Event_id):

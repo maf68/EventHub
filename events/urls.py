@@ -7,7 +7,6 @@ urlpatterns = [
     path('', views.EventListView.as_view(), name='event_list'),
     path('search/', views.EventSearchView.as_view(), name='event_search'),
     path('filter/', views.EventFilterView.as_view(), name='event_filter'),
-    path('<int:id>/reviews/', views.event_reviews, name='event_reviews'),
     path('signup/', views.signup,name='signup'),
     path('login/',views.login_, name='login'),
     path('logout/',views.logout_, name='logout'),
@@ -17,5 +16,5 @@ urlpatterns = [
     path('profile/', views.profile, name = 'profile'),
     path('privacy/', views.privacy_policy , name='privacy_policy'),
     path('terms/', views.terms, name='terms_of_use'),
-    path('settings/', views.settings_, name='settings')
+    path('settings/', views.settings_, name='settings'),
 ]
