@@ -11,6 +11,24 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login,authenticate,logout
 from .forms import CustomUserCreationForm
 from django.conf import settings
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import TemplateView, ListView
+from django.db.models import Q
+from datetime import datetime, timedelta
+from .models import Event, Review, MyUser, Announcement
+from .forms import ReviewForm, MyUserForm
+from django.urls import reverse
+from django.contrib import messages
+from .forms import EventForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login,authenticate,logout
+from .forms import CustomUserCreationForm
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
+from eventhub.settings import BASE_URL
+
 
 
 # def event_reviews(request, id):
@@ -274,3 +292,80 @@ def event_details_and_reviews(request, event_id):
         context['reviews'] = updated_reviews
 
     return render(request, 'event_details_and_reviews.html', context)
+
+
+#Display all announcements for an event
+def get_event_announcements(request, Event_id):
+    # Get the event object based on the event_id parameter
+    event = get_object_or_404(Event, id=Event_id)
+
+    # Get all the announcements for the event
+    announcements = Announcement.objects.filter(event=event)
+
+    # Render the announcements in a template or return as JSON
+    context = {
+        'event': event,
+        'announcements': announcements,
+    }
+    return render(request, 'event_announcements.html', context)
+
+#Create an announcement.
+def create_announcement(request, Event_id):
+    event = get_object_or_404(Event, id=Event_id)
+    if (request.user.is_authenticated == False) or (event.promoter != request.user):
+        return redirect('/')
+    if request.method == "POST":
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        image = request.POST.get('image')
+
+        if title and description:
+            announcement = Announcement.objects.create(
+                title=title,
+                description=description,
+                image=image,
+                event=event
+            )
+            followers = event.following.all()
+            subject = f'New announcement for {event.title}'
+            message = f'There is a new announcement for {event.title}:\n\nTitle: {announcement.title}\nDescription: {announcement.description}\n\n'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [follower.email for follower in followers]
+            send_mail(subject, message, from_email, recipient_list, fail_silently=True)
+
+            #Needs to be updated to redirect to the url for the event details.
+            return redirect('/')
+    
+    return render(request, 'create_announcement.html', {'event': event})
+
+#Probably better to make an edit announcement in the future.
+
+#Announcement details.
+def Announcement_by_id(request, Announcement_id):
+    announcement = Announcement.objects.get(pk = Announcement_id)
+    return render(request, 'announcement_details.html', {'Announcement': announcement})    
+
+def profile(request):
+    if (request.user.is_authenticated):
+        user = request.user
+        return render(request, 'profile.html', {'user': user})
+    return redirect('/')
+
+def privacy_policy(request):
+    return render(request, 'privacy.html', {})
+
+def terms(request):
+    return render(request, 'terms.html', {})
+
+def settings_(request):
+    user = request.user
+    if (user.is_authenticated):
+        if request.method == 'POST':
+            form = MyUserForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+        else:
+            form = MyUserForm(instance=user)
+        return render(request, 'settings.html', {'form': form})
+    return redirect("/")
