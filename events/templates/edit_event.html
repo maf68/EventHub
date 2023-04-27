@@ -46,10 +46,8 @@
     <p class="errors"> {{error}} </p>
     {% endfor %}
     {% endif %}
-
     <!-- <p> Poster: {{form.poster}} </p> -->
     <p> Poster: {{form.poster}} </p>
-
     <p>{% if form.poster.errors %}</p>
     {% for error in form.poster.errors %}
     <p class="errors"> {{error}} </p>
@@ -63,7 +61,12 @@
     <!--<span class="error-message">{{ error_message }}</span>-->
     {% endfor %}
     {% endif %}
-
+    <p class="form-field"> Event Type: {{form.event_type}}</p>
+    <p>{% if form.event_type.errors %}</p>
+    {% for error in form.event_type.errors %}
+    <p class="errors"> {{error}} </p>
+    {% endfor %}
+    {% endif %}  
      <!-- {{ form.as_p }} -->
      <div class="row justify-content-center">
     <button type="submit" class="btn btn-outline-light">Save Changes</button>

@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles5.css' %}" />
 <!--{ load bootstrap5 %}
 { bootstrap_css %}
 { bootstrap_javascript %}-->
@@ -11,56 +11,111 @@
 </head>
 <title>{% block title %}Eventhub - Your One-Stop Event Planning Destination{% endblock %}</title>
 <body>
-  {% block carousel %}
-  <div class="container-fluid bg-secondary">
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
-      <p class="h1 m-3 text-light">Welcome {% if user.is_authenticated %}{{user.username}}{% else %}Guest{% endif %}</p>
-    </div>
+{% block carousel %}
+<div class="container-fluid bg-secondary">
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <p class="h1 m-3 text-light">Welcome {% if user.is_authenticated %}{{user.username}}{% else %}Guest{% endif %}</p>
   </div>
-  <div class="row mx-n5">
-    <div class="col-sm-12 mx-0">
-    <div id="carouselExample" class="carousel slide" data-ride="carousel"  style="width: 100%; height: auto;">
-      <ol class="carousel-indicators">
-        <li data-target="#carouselExample" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExample" data-slide-to="1"></li>
-        <li data-target="#carouselExample" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div class="carousel-item active" data-interval="5000">
-          <div style="background-image: url('/static/media/carousal_image.png'); background-size: cover; background-position: center center; height: 100%;">
-            <a href="#"><img class="d-block w-100" style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; width: 1200px; height: 600px" src="/static/media/event1.png" alt="Upcoming Event 1"></a>
-          </div>
-
-        </div>
-        <div class="carousel-item" data-interval="5000">
-          <div style="background-image: url('/static/media/carousal_image.png'); background-size: cover; background-position: center center; height: 100%;">
-          <a href="#"><img class="d-block w-100" style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event2.png" alt="Upcoming Event 2"></a>
-        </div>
-        </div>
-        <div class="carousel-item" data-interval="5000">
-          <div style="background-image: url('/static/media/carousal_image.png'); background-size: cover; background-position: center center; height: 100%;">
-          <a href="#"><img class="d-block w-100"  style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event3.png" alt="Upcoming Event 3"></a>
-        </div>
+</div>
+<div class="row mx-n5">
+  <div class="col-sm-12 mx-0">
+  <div id="carouselExample" class="carousel slide" data-ride="carousel"  style="width: 100%; height: auto;">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExample" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExample" data-slide-to="1"></li>
+      <li data-target="#carouselExample" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-interval="5000">
+        <div style="background-image: url('/static/media/event1background.png'); background-size: cover; background-position: center center; height: 100%;">
+          <a href="#"><img class="d-block w-100" style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event1.png" alt="Upcoming Event 1"></a>
         </div>
       </div>
-    </div>
-    </div>
+      <div class="carousel-item" data-interval="5000">
+        <div style="background-image: url('/static/media/event2background.png'); background-size: cover; background-position: center center; height: 100%;">
+        <a href="#"><img class="d-block w-100" style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event2.png" alt="Upcoming Event 2"></a>
+      </div>
+      </div>
+      <div class="carousel-item" data-interval="5000">
+        <div style="background-image: url('/static/media/event3background.png'); background-size: cover; background-position: center center; height: 100%;">
+        <a href="#"><img class="d-block w-100"  style="object-fit: contain; max-height: 60vh; position: relative; z-index: 2; max-width: 100%;" src="/static/media/event3.png" alt="Upcoming Event 3"></a>
+      </div>
+      </div>
     </div>
   </div>
-  
-  {% endblock %}
-  
-{%block content %}
+  </div>
+  </div>
+</div>
+
+{% endblock %}
+{%block content %} 
+<h1> Your Preference: </h1>
+<div class="card-container event-list">
+{% for event in object_list %}
+  {% if user.preferance_type == event.event_type%}
+  <div class="col-md-3 col-sm-4">
+    <div class="event-card" style="margin-top: 10px; margin-bottom: 50px; margin-left: 20px;">
+      <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+        <div class="event-details">
+          <h5 class="card-title"><a class="text-dark" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+          <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+          <!--<p class="card-text">{{ event.description }}</p>-->
+          <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+        </div>
+      </div>
+    {% if forloop.counter|divisibleby:4 %}
+  </div><div class="event-list"  style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+  flex-wrap: wrap;
+  justify-content: space-between" >
+    {% endif %}
+  </div>
+  {%endif%}
+  {%endfor%}
+</div>
 <br>
-<br>
+
+
+<h1>Highest Rated Events</h1>
+{% if object_list %}
+<div class="card-container event-list">
+  {% for event in object_list %}
+  {% if event.get_average_rating > 3.9 %}
+    <div class="col-md-3 col-sm-4">
+      <div class="event-card"  style="margin-top: 10px; margin-bottom: 50px; margin-left: 20px;">
+        <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+          <div class="event-details">
+            <h5 class="card-title"><a class="text-dark" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+            <p class="event-details">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+            <!--<p class="card-text">{{ event.description }}</p>-->
+            <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+          </div>
+        </div>
+      {% if forloop.counter|divisibleby:4 %}
+    </div><div class="event-list"  style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+    flex-wrap: wrap;
+    justify-content: space-between" >
+      {% endif %}
+      {% endif %}
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+
+
+
   {% if object_list %}
-    <div class="row justify-content-center m-3">
+    <div class="card-container event-list">
+
+      <h1> Sporting Events </h1>
       {% for event in object_list %}
+      {% if event.event_type == 'Football_Matches' or  event.event_type == 'Basketball_Matches' or  event.event_type == 'Marathons' or  event.event_type == 'Olympic_Games'%}
         <div class="col-md-3 col-sm-4">
-          <div class="card">
-            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
-              <div class="card-body">
+          <div class="event-card"  style= "margin-left: 20px;">
+            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
+              <div class="event-details">
                 <h5 class="card-title"><a class="text-dark" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
                 <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
                 <!--<p class="card-text">{{ event.description }}</p>-->
@@ -68,7 +123,10 @@
               </div>
             </div>
           {% if forloop.counter|divisibleby:4 %}
-            </div><div class="row justify-content-center m-1 row-cards">
+            </div><div class="event-list"  style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+            flex-wrap: wrap;
+            justify-content: space-between" >
+          {% endif %}
           {% endif %}
         </div>
       {% endfor %}
@@ -76,8 +134,102 @@
 {% else %}
   <p class="text-light">No events found.</p>
 {% endif %}
+
+
+
+
+  
+<h1>Upcoming Events</h1>
+{% if object_list %}
+<div class="card-container event-list">
+  {% for event in object_list %}
+  {% if event.date.year == today.year and event.date.month == today.month %}
+    <div class="col-md-3 col-sm-4">
+      <div class="event-card"  style="margin-top: 10px; margin-bottom: 50px; margin-left: 20px;">
+        <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+          <div class="event-details">
+            <h5 class="card-title"><a href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+            <p class="event-details">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+            <!--<p class="card-text">{{ event.description }}</p>-->
+            <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+          </div>
+        </div>
+      {% if forloop.counter|divisibleby:4 %}
+    </div><div class="event-list"  style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+    flex-wrap: wrap;
+    justify-content: space-between" >
+      {% endif %}
+      {% endif %}
+    </div>
+  {% endfor %}
+  {% endif %}
 </div>
 
+
+{% if object_list %}
+<div class="card-container event-list">
+
+  <h1> Art Exhibitions </h1>
+  {% for event in object_list %}
+  {% if event.event_type == 'Art_Exhibitions'%}
+    <div class="col-md-3 col-sm-4">
+      <div class="event-card"  style= "margin-left: 20px;">
+        <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
+          <div class="event-details">
+            <h5 class="card-title"><a class="text-dark" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+            <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+            <!--<p class="card-text">{{ event.description }}</p>-->
+            <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+          </div>
+        </div>
+      {% if forloop.counter|divisibleby:4 %}
+        </div><div class="event-list"  style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+        flex-wrap: wrap;
+        justify-content: space-between" >
+      {% endif %}
+      {% endif %}
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+
+{% if object_list %}
+<div class="card-container event-list">
+
+  <h1> Music Festivals </h1>
+  {% for event in object_list %}
+  {% if event.event_type == 'Music_Festivals'%}
+    <div class="col-md-3 col-sm-4">
+      <div class="event-card"  style= "margin-left: 20px;">
+        <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
+          <div class="event-details">
+            <h5 class="card-title"><a class="text-dark" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+            <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+            <!--<p class="card-text">{{ event.description }}</p>-->
+            <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+          </div>
+        </div>
+      {% if forloop.counter|divisibleby:4 %}
+        </div><div class="event-list"  style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+        flex-wrap: wrap;
+        justify-content: space-between" >
+      {% endif %}
+      {% endif %}
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+
+
+
+
+
+
+</div>
 {% endblock %}
 </body>
 
@@ -136,3 +288,29 @@
   </form>
 
   <br> -->
+  
+<h1>Upcoming Events</h1>
+{% if object_list %}
+<div class="card-container event-list">
+  {% for event in object_list %}
+  {% if event.date.year == today.year and event.date.month == today.month %}
+    <div class="col-md-3 col-sm-4">
+      <div class="event-card"  style="margin-top: 10px; margin-bottom: 50px; margin-left: 20px;">
+        <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+          <div class="event-details">
+            <h5 class="card-title"><a href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+            <p class="event-details">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+            <!--<p class="card-text">{{ event.description }}</p>-->
+            <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+          </div>
+        </div>
+      {% if forloop.counter|divisibleby:4 %}
+    </div><div class="event-list"  style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+    flex-wrap: wrap;
+    justify-content: space-between" >
+      {% endif %}
+      {% endif %}
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>

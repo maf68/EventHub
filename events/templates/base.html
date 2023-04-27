@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     {% block head %} {% endblock %}
+   <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
 </head>
 
 <body>
@@ -50,6 +51,7 @@
         {% endblock %}
     </header>
     <div class="wrapper min-vh-100 d-flex flex-column">
+    <div class="content-wrapper flex-grow-1 bg-secondary">
     <div class="container-fluid, ml-1, mr-1">
     <main>{% block content %}{% endblock %}</main>
     </div>
