@@ -135,3 +135,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'events.MyUser'
 swappable = 'AUTH_USER_MODEL'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+ANONYMOUS_USER_NAME ='AnonymousUser'

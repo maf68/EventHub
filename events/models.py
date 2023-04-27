@@ -6,6 +6,9 @@ from django_countries.fields import CountryField
 from datetime import timedelta
 from django.db.models import Avg
 
+CHOICES = (
+      ('General', 'General'),('Music_Festivals', 'Music Festivals'), ('Art_Exhibitions', 'Art Exhibitions'), ('Theatre_Performances', 'Theatre Performances'), ('Dance_Shows', 'Dance Shows'), ('Film_Festivals', 'Film Festivals'), ('Marathons', 'Marathons'), ('Triathlons', 'Triathlons'), ('Football_Matches', 'Football Matches'), ('Basketball_Games', 'Basketball Games'), ('Olympic_Games', 'Olympic Games'), ('Debates', 'Debates'), ('Fundraisers', 'Fundraisers'), ('Fairs', 'Fairs'), ('Parades', 'Parades'), ('Farmers_Markets', 'Farmers Markets'), ('Charity_Events', 'Charity Events'), ('Volunteer_Events', 'Volunteer Events'), ('Fashion_Shows', 'Fashion Shows'), ('Trade_Shows', 'Trade Shows'), ('Product_Launches', 'Product Launches'), ('Runway_Shows', 'Runway Shows')
+    )
 class Event(models.Model):
     title = models.CharField(max_length=80)
     description = models.TextField()
@@ -17,7 +20,7 @@ class Event(models.Model):
     following = models.ManyToManyField('MyUser', related_name='events_following', blank = True)
     poster = models.URLField(blank = True)
     duration = models.DurationField(default=timedelta(hours=1))
-    event_type = models.CharField(max_length=255, default='General')
+    event_type = models.CharField(max_length=255, choices = CHOICES, default='General')
     request_choices = (
         ("Accept", "Accept"),
         ("Reject", "Reject"),
@@ -56,7 +59,8 @@ class MyUser(AbstractUser):
     address = models.CharField(blank = True, max_length=300)
     is_promoter = models.BooleanField(default=False)
     bio = models.CharField(max_length=500, default="", blank=True)
-    picture = models.URLField(blank = True)
+    picture = models.URLField(blank = True, null=True)
+    preferance_type = models.CharField(max_length=255, choices = CHOICES, default='General')
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
@@ -77,3 +81,4 @@ class Announcement(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='announcement_event', blank=False)
     def _str_(self):
         return f'Announcement for {self.event.title} titled {self.title}'
+    

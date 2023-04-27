@@ -60,7 +60,7 @@ Filter Events
         <div class="col-md-3">
           <div class="event-card">
             <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
-            <a href="{% url 'events:event_list' %}"> 
+            <a href="{% url 'event_details_and_reviews'  event_id=event.id %}"> 
             <div class="event-title">{{ event.title }}</div>
         </a>
             <div class="event-details">
