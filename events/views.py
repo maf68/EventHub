@@ -30,7 +30,6 @@ from django.http import HttpResponseBadRequest
 from eventhub.settings import BASE_URL
 from django.forms import ValidationError;
 from django.utils import timezone
-
 # def event_reviews(request, id):
 #     event = get_object_or_404(Event, id=id)
 #     reviews = Review.objects.filter(event=event).order_by('-created_at')

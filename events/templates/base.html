@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     {% block head %} {% endblock %}
@@ -56,9 +57,9 @@
     </div>
     </div>
     <footer class="footer mt-auto">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-            <a class="navbar-brand" href="#"><p class="text-muted">  &copy;2023 Event_Hub. All rights reserved.</p></a>
+            <a class="navbar-brand" href="#"><p style="color: white">  &copy;2023 Event_Hub. All rights reserved.</p></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
