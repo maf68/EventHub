@@ -79,7 +79,9 @@ class EventListView(ListView):
                 Q(location__icontains=query) |
                 Q(promoter_username_icontains=query) |
                 Q(event_type__icontains=query)
-            )
+            ).filter(request_status='Accept')
+        else:
+            queryset = queryset.filter(request_status='Accept')    
         return queryset
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
