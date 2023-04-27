@@ -8,6 +8,7 @@ from django_countries.fields import CountryField
 from django.core.exceptions import ValidationError
 import re;
 from django.contrib.auth.hashers import make_password
+from django.forms import ValidationError
 
 class MyUserForm(forms.ModelForm):
         is_promoter = forms.ChoiceField(choices=((False, 'Normal User'), (True, 'Promoter')), label='User Type')
@@ -62,6 +63,32 @@ class ReviewForm(forms.ModelForm):
     
 class DurationInput(TextInput):
     input_type = 'duration'
+    def __init__(self, *args, **kwargs):
+        kwargs['attrs'] = {
+            'style': 'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'
+        }
+        super().__init__(*args, **kwargs)
+
+    def format_value(self, value):
+        if value is None:
+            return ''
+        return str(value)
+
+    def value_from_datadict(self, data, files, name):
+        value = data.get(name)
+        if not value:
+            return None
+        try:
+            hours, minutes, seconds = value.split(':')
+            hours = int(hours)
+            minutes = int(minutes)
+            seconds = int(seconds)
+            if not (0 <= hours  and 0 <= minutes < 60 and 0 <= seconds < 60):
+                raise ValueError()
+            return f'{hours:02}:{minutes:02}:{seconds:02}'
+        except ValueError:
+            #raise ValidationError('Enter a valid duration in the format HH:MM:SS.')
+            return
 
 class EventForm(forms.ModelForm):
     duration = forms.DurationField(widget=DurationInput)
@@ -87,6 +114,17 @@ class EventForm(forms.ModelForm):
             "poster": "Poster",
             "duration": "Duration"
         }
+        widgets = {
+            'title': forms.TextInput(attrs={'type': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+            'description': forms.Textarea(attrs={'type': 'form-control', 'rows':'3', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+            'city': forms.TextInput(attrs={'type': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+            'date':  forms.DateInput(attrs={'type': 'date', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+            'poster': forms.URLInput(attrs={'class': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+        }
+        def __init__(self, *args, **kwargs):
+            super(EventForm, self).__init__(*args, **kwargs)
+            self.fields['duration'].widget.attrs.update({'class':'form-control'})
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -95,7 +133,7 @@ class CustomUserCreationForm(UserCreationForm):
     date_of_birth = forms.CharField(max_length=30, required=True, help_text='*')
     nationality = CountryField().formfield()
     bio = forms.CharField(max_length=200)
-    picture = forms.ImageField(required=False)
+    picture = forms.URLInput()
     password1 = forms.CharField(
         label=("Password"),
         strip=False,
@@ -133,7 +171,9 @@ class CustomUserCreationForm(UserCreationForm):
         label=("Is Promoter"),
         required = False
     )
-
+    def __init__(self, *args, **kwargs):
+            super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+            self.fields['picture'].widget.attrs.update({'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'})
     def validate_password(password1):
     # Check for a minimum length of 8 characters
         if len(password1) < 6:

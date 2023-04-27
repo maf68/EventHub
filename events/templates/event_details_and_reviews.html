@@ -1,0 +1,162 @@
+{% extends 'base.html' %} {% block head %} {% load static %} {% endblock %} {% block content %}
+<div class="container text-light">
+    <div class="row">
+        <div class="col md-4">
+            <img src="{{event.poster}}" class="card-img-top" alt="{{ event.poster }}" style="height: 500px; width: 500px; margin-top: 50px ;">
+        </div>
+        <div class="col md-8">
+            <h1>{{ event.title }}</h1>
+            <h6 style="color: white;">Organized by: {{event.promoter}}</h6>
+            <a type="button" class="btn btn-outline-light m-3 p-2" href="{% url 'events:event_announcements' Event_id=event.id %}">Event announcements</a>
+            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username != user.username %}d-none{% endif %}" href="{% url 'events:create_announcement' Event_id=event.id %}">Create Announcement</a>
+            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username == user.username %}d-none{% endif %}" href="{% url 'events:follow' event_id=event.id %}">Follow the Event</a>
+            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username != user.username %}d-none{% endif %}" href="{% url 'events:edit_event' event_id=event.id %}">Edit the Event</a>
+            <div class="accordion" id="accordionExample">
+              <div class="card bg-secondary">
+                <div class="card-header" id="headingOne">
+                  <h2 class="mb-0">
+                    <button class="btn btn-outline-light btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Event Settings
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div class="card-body">
+                    <ul>
+                      <li>Location: In {{ event.city }}, more precisely in {{ event.location }} </li>
+                      <li>Date: {{ event.date }}</li>
+                      <li>Duration: {{event.duration}} Hours</li>
+                      <li>This event is a {{event.event_type}}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card bg-secondary">
+                <div class="card-header" id="headingTwo">
+                  <h2 class="mb-0">
+                    <button class="btn btn-outline-light btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Description
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                  <div class="card-body">
+                    {{ event.description }}
+                </div>
+              </div>
+              <div class="card bg-secondary">
+                <div class="card-header" id="headingThree">
+                  <h2 class="mb-0">
+                    <button class="btn btn-outline-light btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Stats
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                  <div class="card-body">
+                    <ul>
+                      <p>People attending this event:</p>
+                      {% for attendee in event.attendees.all %}
+                        <li> {{attendee}}</li>
+                        {% endfor %}
+                      <p> People following this event: </p>  
+                      {% for follower in event.following.all %}  
+                        <li>{{follower}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+              </div>
+            </div>
+            <div class="card bg-secondary">
+              <div class="card-header" id="headingFour">
+                <h2 class="mb-0">
+                  <button class="btn btn-outline-light btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                      Reviews
+                  </button>
+                </h2>
+              </div>
+              <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                <div class="card-body">
+                  <h1>{{ event.title }} Reviews</h1>
+
+                  <div class="average-rating">
+                    <p>Average Rating: {{ event.get_average_rating }}</p>
+                    <p>Total Reviews: {{ event.get_num_ratings }}</p>
+                  </div>
+                <br>     
+                {% if 'reviews' %} 
+                  {% for review in reviews %}
+                    <div class="review">
+                      <ul>
+                        <li>
+                          <p style="font-size: 20px;">{{ review.user.username }}'s rating: {{ review.rating }}<br> Comment: {{ review.comment }}<br> Date: {{ review.created_at|date:'F d, Y' }}</p>
+                        </li>
+                      </ul>
+                      
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p>No reviews found.</p>
+                {% endif %}
+                
+                  <h2>Add Review</h2>
+                  <form method="post" action="{% url 'events:event_details_and_reviews' event_id=event.pk %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {% if form.errors %}
+                      <div class="alert alert-danger">
+                        {% for field, errors in form.errors.items %}
+                          <p>{{ field }}:</p>
+                          <ul>
+                            {% for error in errors %}
+                              <li>{{ error }}</li>
+                            {% endfor %}
+                          </ul>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    <!--
+                    <div class="star-rating">
+                      <span class="fa fa-star" data-rating="1"></span>
+                      <span class="fa fa-star" data-rating="2"></span>
+                      <span class="fa fa-star" data-rating="3"></span>
+                      <span class="fa fa-star" data-rating="4"></span>
+                      <span class="fa fa-star" data-rating="5"></span>
+                      <input type="hidden" name="rating" id="rating" value="{{ form.rating.value }}">
+                    </div>
+                    <script>
+                      const stars = document.querySelectorAll('.star-rating .fa');
+                      const ratingInput = document.querySelector('#rating');
+                      let currentRating = parseInt(ratingInput.value);
+                    
+                     // Highlight the stars up to the current rating value
+                      for (let i = 0; i < currentRating; i++) {
+                        stars[i].classList.add('active');
+                      }
+                    
+                      // Add click event listener to each star
+                      stars.forEach(star => {
+                        star.addEventListener('click', () => {
+                          currentRating = parseInt(star.getAttribute('data-rating'));
+                          ratingInput.value = currentRating;
+                    
+                          // Highlight the selected star and un-highlight the rest
+                          stars.forEach(s => {
+                            s.classList.remove('active');
+                          });
+                          for (let i = 0; i < currentRating; i++) {
+                            stars[i].classList.add('active');
+                          }
+                        });
+                      });
+                    </script>
+                    <script src="https://kit.fontawesome.com/51d875e202.js" crossorigin="anonymous"></script> 
+                  -->
+                    <button type="submit" class="btn btn-outline-light">Submit</button> 
+                  </form>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+{% endblock %}
