@@ -15,13 +15,16 @@ class MyUserForm(forms.ModelForm):
         password = forms.CharField(widget=forms.PasswordInput, required=False, help_text="Leave empty to not change the password")
         class Meta:
             model = MyUser
-            fields = ['first_name', 'last_name', 'date_of_birth', 'nationality', 'address', 'is_promoter', 'bio', 'picture', 'password']
+            fields = ['first_name', 'last_name', 'date_of_birth', 'nationality', 'address', 'is_promoter', 'bio', 'preferance_type', 'picture', 'password']
             widgets = {
                 'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
                 'nationality': forms.Select(attrs={'class': 'custom-select'}),
                 'address': forms.TextInput(attrs={'class': 'form-control'}),
                 'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
                 'picture': forms.URLInput(attrs={'class': 'form-control'}),
+                'preferance_type': forms.Select(attrs={'type': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+
+                
             }
         def __init__(self, *args, **kwargs):
             super(MyUserForm, self).__init__(*args, **kwargs)
@@ -92,7 +95,6 @@ class DurationInput(TextInput):
 
 class EventForm(forms.ModelForm):
     duration = forms.DurationField(widget=DurationInput)
-
     class Meta:
         model = Event
         fields = [
@@ -102,7 +104,8 @@ class EventForm(forms.ModelForm):
             "location",
             "date",
             "poster",
-            "duration"
+            "duration",
+            "event_type",
         ]
 
         labels = {
@@ -112,7 +115,8 @@ class EventForm(forms.ModelForm):
             "location": "Location",
             "date": "Date",
             "poster": "Poster",
-            "duration": "Duration"
+            "duration": "Duration",
+            "event_type": "Event Type",
         }
         widgets = {
             'title': forms.TextInput(attrs={'type': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
@@ -121,6 +125,7 @@ class EventForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
             'date':  forms.DateInput(attrs={'type': 'date', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
             'poster': forms.URLInput(attrs={'class': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
+            'event_type': forms.Select(attrs={'type': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
         }
         def __init__(self, *args, **kwargs):
             super(EventForm, self).__init__(*args, **kwargs)
@@ -190,4 +195,4 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = MyUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'picture', 'nationality','bio', 'is_promoter', 'date_of_birth', 'password1','password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'picture', 'nationality','bio', 'is_promoter', 'preferance_type', 'date_of_birth', 'password1','password2')
