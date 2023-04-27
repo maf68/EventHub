@@ -105,7 +105,7 @@ class EventSearchView(ListView):
                 Q(event_type__icontains=query) |
                 Q(date__icontains=query) |
                 Q(duration__icontains=query)
-            )
+            ).filter(request_status='Accept')
             return object_list
         else:
             return Event.objects.none()
@@ -117,6 +117,7 @@ class EventFilterView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        queryset = queryset.filter(request_status='Accept')
         location = self.request.GET.get('location')
         date = self.request.GET.get('date')
         duration = self.request.GET.get('duration')
@@ -380,7 +381,7 @@ def followed_events(request):
     
     # Get all the events the user is following
     followed_events = Event.objects.filter(following__in=[user])
-    
+    followed_events = followed_events.filter(request_status='Accept')
     # Render the events using a template
     context = {'followed_events': followed_events}
     return render(request, 'followed_events.html', context)
