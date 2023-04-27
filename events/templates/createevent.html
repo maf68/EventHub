@@ -68,6 +68,12 @@
       {% endfor %}
       {% endif %}  
        <!-- {{ form.as_p }} -->
+       <p class="form-field"> Event Type: {{form.event_type}}</p>
+       <p>{% if form.event_type.errors %}</p>
+       {% for error in form.event_type.errors %}
+       <p class="errors"> {{error}} </p>
+       {% endfor %}
+       {% endif %}  
       <button type="submit">Create Event</button>
     </form>
   </body>

@@ -29,8 +29,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from eventhub.settings import BASE_URL
 from django.forms import ValidationError;
-
-
+from django.utils import timezone
 # def event_reviews(request, id):
 #     event = get_object_or_404(Event, id=id)
 #     reviews = Review.objects.filter(event=event).order_by('-created_at')
@@ -88,6 +87,7 @@ class EventListView(ListView):
         context['cities'] = Event.objects.order_by().values_list('city', flat=True).distinct()
         context['event_types'] = self.model.objects.order_by().values_list('event_type', flat=True).distinct()
         context['locations'] = Event.objects.values_list('city', flat=True).distinct()
+        context['today'] = timezone.datetime.today().date
         return context
 
 class EventSearchView(ListView):
@@ -269,7 +269,7 @@ def event_details_and_reviews(request, event_id):
                 review.user = MyUser.objects.get_or_create(username=settings.ANONYMOUS_USER_NAME)[0] # assign the anonymous user to the review    
             review.comment = form.cleaned_data['comment']
             review.save()
-            reviews_url = reverse('events:event_details_and_reviews.html', args=[event.id]) + '?reviews=1'
+            reviews_url = reverse('event_details_and_reviews', args=[event.id]) + '?reviews=1'
             return redirect(reviews_url)
         else:
             context = {'event': event, 'reviews': reviews, 'form': form, 'form_errors': form.errors}

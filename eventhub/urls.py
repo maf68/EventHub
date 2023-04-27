@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from events.views import EventSearchView
 from events.views import EventFilterView
-from events.views import create_event, edit_event
+from events.views import create_event, edit_event, event_details_and_reviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('filter/', EventFilterView.as_view(), name='event_filter'),
     path("create_event/", create_event, name="create_event"),
     path("edit_event/<int:event_id>/", edit_event, name="edit_event"),
+     path('event/<int:event_id>/', event_details_and_reviews, name='event_details_and_reviews'),
     path('', include('events.urls')),
     
 ]

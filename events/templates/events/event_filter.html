@@ -1,4 +1,4 @@
-{% extends "base-filter.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}
@@ -7,17 +7,14 @@ Filter Events
 
 {% block head %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/styles5.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-<h1 class="filter-heading h1 m-3"><strong>Filter Events</strong></h1>
-</div>
-<div class="row justify-content-center">
+<h1 style="color:white"; class="filter-heading"><strong>Filter Events</strong></h1>
 <form method="get" action="{% url 'events:event_filter' %}" class="filter-form">
-    <div class="filter-item m-3 text-dark">
-        <label for="location">Location:</label>
+    <div class="filter-item">
+        <p style="color: white"><label for="location">Location:</label></p>
         <select name="location" id="location">
             <option value="">--Select Location--</option>
             {% for city in cities %}
@@ -25,14 +22,13 @@ Filter Events
             {% endfor %}
         </select>
     </div>
-
-    <div class="filter-item m-3 text-dark">
-        <label for="date">Date:</label>
+    <div class="filter-item">
+        <p style="color:white"><label for="date">Date:</label></p>
         <input type="date" name="date" id="date" value="{{ date }}">
     </div>
 
-    <div class="filter-item m-3 text-dark">
-        <label for="duration">Duration:</label>
+    <div class="filter-item">
+        <p style="color:white"><label for="duration">Duration:</label></p>
         <select name="duration" id="duration">
             <option value="">--Select Duration--</option>
             <option value="01:00:00">1 hour</option>
@@ -42,9 +38,8 @@ Filter Events
             <option value="3:00:00">3+ hours</option>
         </select>
     </div>
-
-    <div class="filter-item m-3 text-dark">
-        <label for="event_type">Event Type:</label>
+    <div class="filter-item">
+        <p style="color:white"><label for="event_type">Event Type:</label></p>
         <select name="event_type" id="event_type">
             <option value="">--Select Event Type--</option>
             {% for event_type in event_types %}
@@ -52,31 +47,38 @@ Filter Events
             {% endfor %}
         </select>
     </div>
-
-    <button type="submit" class="btn btn-outline-dark filter-button m-3">Filter</button>
+    <button type="submit" class="filter-button">Filter</button>
 </form>
-</div>
-</div>
+
 {% if object_list %}
-    <div class="row justify-content-center m-3">
+    <div class="card-container event-list">
       {% for event in object_list %}
-        <div class="col-md-3 col-sm-4">
-          <div class="card">
-            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
-              <div class="card-body">
-                <h5 class="card-title"><a class="text-dark" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
-                <p class="card-text">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
-                <!--<p class="card-text">{{ event.description }}</p>-->
-                <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+     
+        <div class="col-md-3">
+          <div class="event-card">
+            <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}">
+            <a href="{% url 'events:event_details_and_reviews' event_id=event.id %}"> 
+            <div class="event-title">{{ event.title }}</div>
+        </a>
+          <div style="color:white"; class="event-details">
+                <div class="event-date">{{ event.date }} -</div>
+                <div class="event-location">{{ event.location }} -</div>
+                <div class="event-city">{{ event.city }}  </div>
+                <div class="event-promoter"> - {{ event.promoter }}</div>                      
               </div>
-            </div>
-          {% if forloop.counter|divisibleby:4 %}
-            </div><div class="row justify-content-center m-1 row-cards">
-          {% endif %}
+          </div>
         </div>
+    
+        {% if forloop.counter|divisibleby:4 %}
+            </div><div class="event-list" style="margin-bottom: 50px; margin-top: 50px; display: flex ;
+            flex-wrap: wrap;
+            justify-content: space-between" >
+        {% endif %}
       {% endfor %}
     </div>
+    </div>
 {% else %}
-  <p class="text-dark">No events found.</p>
+    <p class="no-events">No events found.</p>
 {% endif %}
+
 {% endblock %}
