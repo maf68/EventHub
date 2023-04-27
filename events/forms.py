@@ -126,8 +126,6 @@ class EventForm(forms.ModelForm):
             'date':  forms.DateInput(attrs={'type': 'date', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
             'poster': forms.URLInput(attrs={'class': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
             'event_type': forms.Select(attrs={'type': 'form-control', 'style':'display: block; width: 100%; padding: 10px; margin-bottom: 20px; font-size: 18px; border-radius: 5px; border: 2px solid #ddd;'}),
-
-
         }
         def __init__(self, *args, **kwargs):
             super(EventForm, self).__init__(*args, **kwargs)

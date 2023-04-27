@@ -31,7 +31,6 @@ from eventhub.settings import BASE_URL
 from django.forms import ValidationError;
 from django.utils import timezone
 
-
 # def event_reviews(request, id):
 #     event = get_object_or_404(Event, id=id)
 #     reviews = Review.objects.filter(event=event).order_by('-created_at')
@@ -88,7 +87,6 @@ class EventListView(ListView):
         context['event_types'] = self.model.objects.order_by().values_list('event_type', flat=True).distinct()
         context['locations'] = Event.objects.values_list('city', flat=True).distinct()
         context['today'] = timezone.datetime.today().date
-
         return context
 
 class EventSearchView(ListView):
