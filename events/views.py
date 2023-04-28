@@ -123,6 +123,15 @@ class EventFilterView(ListView):
         date = self.request.GET.get('date')
         duration = self.request.GET.get('duration')
         event_type = self.request.GET.get('event_type')
+        search_query = self.request.GET.get('q')
+        if search_query:
+            queryset = queryset.filter(
+            Q(title__icontains=search_query) | 
+            Q(description__icontains=search_query) | 
+            Q(city__icontains=search_query) | 
+            Q(location__icontains=search_query) | 
+            Q(event_type__icontains=search_query)
+        )
 
         if location:
             queryset = queryset.filter(city=location)

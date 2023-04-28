@@ -9,8 +9,8 @@
             <h6 style="color: white;">Organized by: {{event.promoter}}</h6>
             <a type="button" class="btn btn-outline-light m-3 p-2" href="{% url 'events:event_announcements' Event_id=event.id %}">Event announcements</a>
             <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username != user.username %}d-none{% endif %}" href="{% url 'events:create_announcement' Event_id=event.id %}">Create Announcement</a>
-            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username == user.username %}d-nonex{% endif %} {% if user in event.following.all %}d-none{% endif %}" href="{% url 'events:follow' event_id=event.id %}">Follow the Event</a>
-            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username == user.username %}d-nonex{% endif %} {% if user not in event.following.all %}d-none{% endif %}" href="{% url 'events:unfollow' event_id=event.id %}">Unfollow the Event</a>
+            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username == user.username %}d-none {% endif %} {% if user in event.following.all %}d-none{% endif %}" href="{% url 'events:follow' event_id=event.id %}">Follow the Event</a>
+            <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username == user.username %}d-none {% endif %} {% if user not in event.following.all %}d-none{% endif %}" href="{% url 'events:unfollow' event_id=event.id %}">Unfollow the Event</a>
             <a type = "button" class="btn btn-outline-light m-3 p-2 {% if event.promoter.username != user.username %}d-none{% endif %}" href="{% url 'events:edit_event' event_id=event.id %}">Edit the Event</a>
             <div class="accordion" id="accordionExample">
               <div class="card bg-secondary">
@@ -90,7 +90,7 @@
                     <div class="review">
                       <ul>
                         <li>
-                          <p style="font-size: 20px;">{{ review.user.username }}'s rating: {{ review.rating }}<br> Comment: {{ review.comment }}<br> Date: {{ review.created_at|date:'F d, Y' }}</p>
+                          <p class ="text-light">{{ review.user.username }}'s rating: {{ review.rating }}<br> Comment: {{ review.comment }}<br> Date: {{ review.created_at|date:'F d, Y' }}</p>
                         </li>
                       </ul>
                     </div>
