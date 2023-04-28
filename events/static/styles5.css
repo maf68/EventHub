@@ -173,3 +173,20 @@ select option {
   .card-container .event-list{
     margin-left: 100px;
   }
+
+  .star-rating {
+    font-size: 30px;
+  }
+  
+  .star-rating .fa {
+    color: #ddd;
+    cursor: pointer;
+  }
+  
+  .star-rating .fa:hover {
+    color: #f7d51d;
+  }
+  
+  .star-rating .fa.active {
+    color: #f7d51d;
+  }
