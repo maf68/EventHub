@@ -71,7 +71,7 @@
               <div class="card-header" id="headingFour">
                 <h2 class="mb-0">
                   <button class="btn btn-outline-light btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                      Reviews
+                      Reviews | Ratings
                   </button>
                 </h2>
               </div>
@@ -92,7 +92,6 @@
                           <p style="font-size: 20px;">{{ review.user.username }}'s rating: {{ review.rating }}<br> Comment: {{ review.comment }}<br> Date: {{ review.created_at|date:'F d, Y' }}</p>
                         </li>
                       </ul>
-                      
                     </div>
                   {% endfor %}
                 {% else %}
@@ -115,7 +114,7 @@
                         {% endfor %}
                       </div>
                     {% endif %}
-                    <!--
+                    
                     <div class="star-rating">
                       <span class="fa fa-star" data-rating="1"></span>
                       <span class="fa fa-star" data-rating="2"></span>
@@ -151,12 +150,12 @@
                       });
                     </script>
                     <script src="https://kit.fontawesome.com/51d875e202.js" crossorigin="anonymous"></script> 
-                  -->
+                  
                     <button type="submit" class="btn btn-outline-light">Submit</button> 
                   </form>
               </div>
+              </div>
             </div>
-          </div>
     </div>
   </div>
 {% endblock %}

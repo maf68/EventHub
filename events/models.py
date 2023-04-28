@@ -52,6 +52,8 @@ class Event(models.Model):
             return round(total_ratings / len(reviews), 1)
         else:
             return 0
+    def get_num_ratings(self):
+        return self.reviews.count()
 
 class MyUser(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)

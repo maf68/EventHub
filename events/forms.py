@@ -38,31 +38,54 @@ class MyUserForm(forms.ModelForm):
                 return self.instance.password
  
 class ReviewForm(forms.ModelForm):
-    RATING_CHOICES = [
-        (1, '1 - Poor'),
-        (2, '2 - Fair'),
-        (3, '3 - Average'),
-        (4, '4 - Good'),
-        (5, '5 - Excellent')
-    ]
-    rating = forms.ChoiceField(choices=RATING_CHOICES, widget=forms.RadioSelect) 
+    rating = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}), max_length=500)
 
     class Meta:
         model = Review
-        fields = ('rating', 'comment',)
-    
-    def clean_rating(self):
-        rating = self.cleaned_data['rating']
-        if int(rating) not in [choice[0] for choice in self.RATING_CHOICES]:
-            raise forms.ValidationError("Invalid rating value")
-        return rating
+        fields = ('rating','comment',)
     
     def clean_comment(self):
         comment = self.cleaned_data['comment']
         if not comment:
             raise forms.ValidationError("Comment cannot be empty")
         return comment
+class RatingInput(forms.NumberInput):
+    template_name = 'widgets/rating_input.html'
+    input_type = 'range'
+    min_value = 1
+    max_value = 5
+    step = 1
+
+class RatingWidget(forms.MultiWidget):
+    template_name = 'widgets/rating_widget.html'
+
+    def _init_(self, attrs=None):
+        widgets = (
+            RatingInput(attrs=attrs),
+            forms.HiddenInput(attrs=attrs),
+        )
+        super()._init_(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            return [value, value]
+        return [None, None]
+
+class RatingField(forms.MultiValueField):
+    widget = RatingWidget
+
+    def _init_(self, *args, **kwargs):
+        fields = (
+            forms.IntegerField(min_value=self.widget.min_value, max_value=self.widget.max_value, step=self.widget.step),
+            forms.IntegerField(widget=forms.HiddenInput())
+        )
+        super()._init_(fields, *args, **kwargs)
+
+    def compress(self, data_list):
+        if data_list:
+            return data_list[0]
+        return None
     
 class DurationInput(TextInput):
     input_type = 'duration'
