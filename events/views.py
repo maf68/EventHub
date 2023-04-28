@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
-from .models import Event, Review, MyUser
+from .models import Event, Review, MyUser, Announcement
 from .forms import ReviewForm
 from django.urls import reverse
 from django.contrib import messages
@@ -15,7 +15,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from datetime import datetime, timedelta
-from .models import Event, Review, MyUser, Announcement
 from .forms import ReviewForm, MyUserForm
 from django.urls import reverse
 from django.contrib import messages
@@ -30,6 +29,8 @@ from django.http import HttpResponseBadRequest
 from eventhub.settings import BASE_URL
 from django.forms import ValidationError;
 from django.utils import timezone
+from django.contrib.auth import update_session_auth_hash
+
 # def event_reviews(request, id):
 #     event = get_object_or_404(Event, id=id)
 #     reviews = Review.objects.filter(event=event).order_by('-created_at')
@@ -370,11 +371,24 @@ def follow_event(request, event_id):
     if user.is_authenticated:
         event.following.add(user)
         event.save()
-        return redirect("/")
+        details_url = reverse('event_details_and_reviews', args=[event.id])
+        return redirect(details_url)
     else:
-        # Do something like redirect to the login page
-        return redirect("/")
-
+        details_url = reverse('event_details_and_reviews', args=[event.id])
+        return redirect(details_url)
+    
+def unfollow_event(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    user = request.user
+    if user.is_authenticated:
+        event.following.remove(user)
+        event.save()
+        details_url = reverse('event_details_and_reviews', args=[event.id])
+        return redirect(details_url) 
+    else:
+        details_url = reverse('event_details_and_reviews', args=[event.id])
+        return redirect(details_url)
+    
 def followed_events(request):
     # Get the current user
     user = request.user
@@ -385,3 +399,13 @@ def followed_events(request):
     # Render the events using a template
     context = {'followed_events': followed_events}
     return render(request, 'followed_events.html', context)
+
+def my_events(request):
+    # Get the current user
+    user = request.user
+    
+    # Get all the events the user has made
+    my_events = Event.objects.filter(promoter = user)
+    # Render the events using a template
+    context = {'my_events': my_events}
+    return render(request, 'my_events.html', context)

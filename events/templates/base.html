@@ -29,6 +29,7 @@
                     <!--<a class="nav-link active text-light" href="{% url 'events:event_filter' %}">Filter Events</a>-->                
                     <a class="nav-link active text-light {% if not user.is_promoter %}d-none{% endif %}" href="{% url 'create_event' %}">Create Event</a>
                     <a class="nav-link active text-light {% if not user.is_authenticated %}d-none{% endif %}" href="{% url 'events:followed' %}">Followed Events</a>
+                    <a class="nav-link active text-light {% if not user.is_promoter %}d-none{% endif %}" href="{% url 'events:my_events' %}">My Events</a>
                 </div>
                 </div>            
                 <form method="GET" class="input-group col-md-3 col-sm-4" action="{% url 'events:event_filter' %}">

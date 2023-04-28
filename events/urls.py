@@ -23,6 +23,8 @@ urlpatterns = [
     path('edit_event/<int:event_id>/', views.edit_event, name='edit_event'),
     path('follow/<int:event_id>/', views.follow_event, name = 'follow'),
     path('followed/', views.followed_events, name = 'followed'),
+    path('unfollow/<int:event_id>/', views.unfollow_event, name = 'unfollow'),
+    path('my_events/', views.my_events, name = 'my_events'),
 ]
 
 
