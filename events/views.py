@@ -31,6 +31,7 @@ from django.forms import ValidationError;
 from django.utils import timezone
 from django.contrib.auth import update_session_auth_hash
 
+
 # def event_reviews(request, id):
 #     event = get_object_or_404(Event, id=id)
 #     reviews = Review.objects.filter(event=event).order_by('-created_at')
@@ -77,7 +78,7 @@ class EventListView(ListView):
                 Q(description__icontains=query) |
                 Q(city__icontains=query) |
                 Q(location__icontains=query) |
-                Q(promoter_username_icontains=query) |
+                Q(promoter_username__icontains=query) |
                 Q(event_type__icontains=query)
             ).filter(request_status='Accept')
         else:
@@ -88,7 +89,18 @@ class EventListView(ListView):
         context['cities'] = Event.objects.order_by().values_list('city', flat=True).distinct()
         context['event_types'] = self.model.objects.order_by().values_list('event_type', flat=True).distinct()
         context['locations'] = Event.objects.values_list('city', flat=True).distinct()
-        context['today'] = timezone.datetime.today().date
+        today1 = timezone.datetime.now()
+        year1 = today1.year
+        month1 = today1.month
+        context['today'] = today1
+        if (self.request.user.is_authenticated):
+            context['preference'] = Event.objects.filter(event_type= self.request.user.preferance_type, request_status='Accept')        
+        context['high_rated'] = Event.objects.filter(avg_rating__gt=3.9, request_status='Accept')
+        context['upcoming'] = Event.objects.filter(date__year = year1, date__month = month1, request_status='Accept')
+        context['sports'] = Event.objects.filter(Q(event_type='Football_Matches') | Q(event_type='Basketball_Matches') | Q(event_type='Marathons') | Q(event_type='Olympic_Games'), request_status='Accept')
+        context['art'] = Event.objects.filter(event_type = 'Art_Exhibitions', request_status = 'Accept')   
+        context['music'] = Event.objects.filter(event_type = 'Music_Festivals', request_status = 'Accept') 
+        context['user'] = self.request.user
         return context
 
 class EventSearchView(ListView):
@@ -280,6 +292,7 @@ def event_details_and_reviews(request, event_id):
                 review.user = MyUser.objects.get_or_create(username=settings.ANONYMOUS_USER_NAME)[0] # assign the anonymous user to the review    
             review.comment = form.cleaned_data['comment']
             review.save()
+            event.save()
             reviews_url = reverse('event_details_and_reviews', args=[event.id]) + '?reviews=1'
             return redirect(reviews_url)
         else:

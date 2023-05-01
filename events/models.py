@@ -21,6 +21,7 @@ class Event(models.Model):
     poster = models.URLField(blank = True)
     duration = models.DurationField(default=timedelta(hours=1))
     event_type = models.CharField(max_length=255, choices = CHOICES, default='General')
+    avg_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=0)
     request_choices = (
         ("Accept", "Accept"),
         ("Reject", "Reject"),
@@ -54,6 +55,9 @@ class Event(models.Model):
             return 0
     def get_num_ratings(self):
         return self.reviews.count()
+    def save(self, *args, **kwargs):
+        self.avg_rating = self.get_average_rating()
+        super(Event, self).save(*args, **kwargs)
 
 class MyUser(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)
@@ -75,6 +79,10 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Review for {self.event.title} by {self.user.username}'
+    def delete(self, using=None, keep_parents=False):
+        event = self.event
+        super().delete(using=using, keep_parents=keep_parents)
+        event.save()
 
 class Announcement(models.Model):
     title = models.CharField(max_length = 150, blank = False, default = "")
