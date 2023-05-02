@@ -94,8 +94,8 @@ class EventListView(ListView):
         month1 = today1.month
         context['today'] = today1
         if (self.request.user.is_authenticated):
-            context['preference'] = Event.objects.filter(event_type= self.request.user.preferance_type, request_status='Accept')        
-        context['high_rated'] = Event.objects.filter(avg_rating__gt=3.9, request_status='Accept')
+            context['preference'] = Event.objects.filter(event_type= self.request.user.preferance_type, request_status='Accept')
+            context['high_rated'] = Event.objects.filter(avg_rating__gt=3.9, request_status='Accept')
         context['upcoming'] = Event.objects.filter(date__year = year1, date__month = month1, request_status='Accept')
         context['sports'] = Event.objects.filter(Q(event_type='Football_Matches') | Q(event_type='Basketball_Matches') | Q(event_type='Marathons') | Q(event_type='Olympic_Games'), request_status='Accept')
         context['art'] = Event.objects.filter(event_type = 'Art_Exhibitions', request_status = 'Accept')   

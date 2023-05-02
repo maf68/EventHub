@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -31,9 +31,9 @@
                     <a class="nav-link active text-light {% if not user.is_authenticated %}d-none{% endif %}" href="{% url 'events:followed' %}">Followed Events</a>
                     <a class="nav-link active text-light {% if not user.is_promoter %}d-none{% endif %}" href="{% url 'events:my_events' %}">My Events</a>
                 </div>
-                </div>            
+                </div>           
                 <form method="GET" class="input-group col-md-3 col-sm-4" action="{% url 'events:event_filter' %}">
-                    <input type="text" class="form-control" name="q" placeholder="Search events">
+                    <input type="text" class="form-control" "d-flex align-items-center" name="q" placeholder="Search events">
                     <button type="submit" class="btn btn-outline-light btn-addon-2">Search</button>
                 </form>
                 <a type="button" class="btn btn-outline-light col-md-1 col-sm-2  m-1 {% if user.is_authenticated %}d-none{% endif %}" href="{% url 'events:signup' %}">Sign up</a>

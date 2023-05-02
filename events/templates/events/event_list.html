@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% load static %} {% block head %} {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/styles5.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}" />
 <!--{ load bootstrap5 %}
 { bootstrap_css %}
 { bootstrap_javascript %}-->
@@ -7,7 +7,7 @@
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="{% static './css/styles.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
 </head>
 <title>{% block title %}Eventhub - Your One-Stop Event Planning Destination{% endblock %}</title>
 <body>
@@ -50,7 +50,56 @@
 
 {% endblock %}
 {%block content %}
+
 <div class="{% if not user.is_authenticated %}d-none{% endif %}">
+  
+  <h1 class="h1 text-light m-3">Your Preference:</h1>
+  <div id="event-carousel" class="carousel slide">
+      <div class="carousel-inner">
+          {% if preference %}
+          {% for event in preference %}
+          {% if forloop.counter0|divisibleby:4 %}
+          <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+              <div class="card-container text-light m-4">
+                  <div class="row justify-content-center">
+          {% endif %}
+                      <div class="col-md-3 col-sm-6 mb-3">
+                          <div class="card event-card d-flex flex-wrap bg-transparent">
+                              <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+                              <div class="header">
+                                  <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+                              </div>
+                              <div class="card-body event-details">  
+                                  <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+                              </div>
+                          </div>
+                      </div>
+          {% if forloop.last or forloop.counter0|add:1|divisibleby:4 %}
+                  </div>
+              </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% if not preference %}
+          <div class="carousel-item active">
+              <p class="text-light m-3">No events found.</p>
+          </div>
+          {% endif %}
+          {% endif %}
+      </div>
+      <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+      </a>
+  </div>
+</div>
+
+
+{% comment %} <div class="{% if not user.is_authenticated %}d-none{% endif %}">
 <h1 class="h1 text-light m-3"> Your Preference: </h1>
 <div class="card-container text-light m-4">
   <div class="row justify-content-center">
@@ -76,9 +125,9 @@
   </div>
 </div>
 <br>
-</div> 
+</div>  {% endcomment %}
 
-<h1 class="h1 text-light m-3"> Highest Rated Events: </h1>
+{% comment %} <h1 class="h1 text-light m-3"> Highest Rated Events: </h1>
 <div class="card-container text-light m-4">
   <div class="row justify-content-center">
     {% if high_rated %}
@@ -101,111 +150,237 @@
     <p class="text-light m-3">No events found.</p>
     {% endif %}
   </div>
+</div> {% endcomment %}
+<div class="{% if not user.is_authenticated %}d-none{% endif %}">
+<h1 class="h1 text-light m-3">Highest Rated Events:</h1>
+  <div id="event-carousel" class="carousel slide">
+      <div class="carousel-inner">
+          {% if high_rated %}
+          {% for event in high_rated %}
+          {% if forloop.counter0|divisibleby:4 %}
+          <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+              <div class="card-container text-light m-4">
+                  <div class="row justify-content-center">
+          {% endif %}
+                      <div class="col-md-3 col-sm-6 mb-3">
+                          <div class="card event-card d-flex flex-wrap bg-transparent">
+                              <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+                              <div class="header">
+                                  <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+                              </div>
+                              <div class="card-body event-details">  
+                                  <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+                              </div>
+                          </div>
+                      </div>
+          {% if forloop.last or forloop.counter0|add:1|divisibleby:4 %}
+                  </div>
+              </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% if not high_rated %}
+          <div class="carousel-item active">
+              <p class="text-light m-3">No events found.</p>
+          </div>
+          {% endif %}
+          {% endif %}
+      </div>
+      <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+      </a>
+  </div>
 </div>
 <br>
+<h1 class="h1 text-light m-3">Upcoming Events:</h1>
+  <div id="event-carousel" class="carousel slide">
+      <div class="carousel-inner">
+          {% if upcoming %}
+          {% for event in upcoming %}
+          {% if forloop.counter0|divisibleby:4 %}
+          <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+              <div class="card-container text-light m-4">
+                  <div class="row justify-content-center">
+          {% endif %}
+                      <div class="col-md-3 col-sm-6 mb-3">
+                          <div class="card event-card d-flex flex-wrap bg-transparent">
+                              <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+                              <div class="header">
+                                  <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+                              </div>
+                              <div class="card-body event-details">  
+                                  <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+                              </div>
+                          </div>
+                      </div>
+          {% if forloop.last or forloop.counter0|add:1|divisibleby:4 %}
+                  </div>
+              </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% if not upcoming %}
+          <div class="carousel-item active">
+              <p class="text-light m-3">No events found.</p>
+          </div>
+          {% endif %}
+          {% endif %}
+      </div>
+      <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+      </a>
+  </div>
 
-<h1 class="h1 text-light m-3"> Upcoming Events:  </h1>
-<div class="card-container text-light m-4">
-  <div class="row justify-content-center">
-    {% if upcoming %}
-    {% for event in upcoming %}
-      <div class="col-md-3 col-sm-6 mb-3">
-      <div class="card event-card d-flex flex-wrap bg-transparent">
-          <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
-          <div class="header">
-              <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+<br>
+<div class="{% if not user.is_authenticated %}d-none{% endif %}">
+<h1 class="h1 text-light m-3">Sporting Events:</h1>
+  <div id="event-carousel" class="carousel slide">
+      <div class="carousel-inner">
+          {% if sports %}
+          {% for event in sports %}
+          {% if forloop.counter0|divisibleby:4 %}
+          <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+              <div class="card-container text-light m-4">
+                  <div class="row justify-content-center">
+          {% endif %}
+                      <div class="col-md-3 col-sm-6 mb-3">
+                          <div class="card event-card d-flex flex-wrap bg-transparent">
+                              <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+                              <div class="header">
+                                  <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+                              </div>
+                              <div class="card-body event-details">  
+                                  <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+                              </div>
+                          </div>
+                      </div>
+          {% if forloop.last or forloop.counter0|add:1|divisibleby:4 %}
+                  </div>
+              </div>
           </div>
-          <div class="card-body event-details">  
-              <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
-              <!--<p class="card-text">{{ event.description }}</p>-->
-              <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
+          {% endif %}
+          {% endfor %}
+          {% if not sports %}
+          <div class="carousel-item active">
+              <p class="text-light m-3">No events found.</p>
           </div>
+          {% endif %}
+          {% endif %}
       </div>
-      </div>
-    {%endfor%}
-    {% else %}
-    <p class="text-light m-3">No events found.</p>
-    {% endif %}
+      <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+      </a>
   </div>
 </div>
 <br>
 
-<h1 class="h1 text-light m-3"> Sporting Events:  </h1>
-<div class="card-container text-light m-4">
-  <div class="row justify-content-center">
-    {% if sports %}
-    {% for event in sports %}
-      <div class="col-md-3 col-sm-6 mb-3">
-      <div class="card event-card d-flex flex-wrap bg-transparent">
-          <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
-          <div class="header">
-              <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
-          </div>
-          <div class="card-body event-details">  
-              <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
-              <!--<p class="card-text">{{ event.description }}</p>-->
-              <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
-          </div>
-      </div>
-      </div>
-    {%endfor%}
-    {% else %}
-    <p class="text-light m-3">No events found.</p>
-  {% endif %}
+<div class="{% if not user.is_authenticated %}d-none{% endif %}">
+  <h1 class="h1 text-light m-3">Art Exhibition:</h1>
+    <div id="event-carousel" class="carousel slide">
+        <div class="carousel-inner">
+            {% if art %}
+            {% for event in art %}
+            {% if forloop.counter0|divisibleby:4 %}
+            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                <div class="card-container text-light m-4">
+                    <div class="row justify-content-center">
+            {% endif %}
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="card event-card d-flex flex-wrap bg-transparent">
+                                <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+                                <div class="header">
+                                    <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+                                </div>
+                                <div class="card-body event-details">  
+                                    <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+                                </div>
+                            </div>
+                        </div>
+            {% if forloop.last or forloop.counter0|add:1|divisibleby:4 %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% if not art %}
+            <div class="carousel-item active">
+                <p class="text-light m-3">No events found.</p>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+        <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
   </div>
-</div>
 <br>
 
-<h1 class="h1 text-light m-3"> Art Exhibitions:  </h1>
-<div class="card-container text-light m-4">
-  <div class="row justify-content-center">
-    {% if art %}
-    {% for event in art %}
-      <div class="card event-card d-flex flex-wrap bg-transparent">
-        <div class="col-md-3 col-sm-6 mb-3">
-          <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
-          <div class="header">
-              <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
-          </div>
-          <div class="card-body event-details">  
-              <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
-              <!--<p class="card-text">{{ event.description }}</p>-->
-              <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
-          </div>
-      </div>
-      </div>
-    {%endfor%}
-    {% else %}
-    <p class="text-light m-3">No events found.</p>
-  {% endif %}
+<div class="{% if not user.is_authenticated %}{% endif %}">
+  <h1 class="h1 text-light m-3">Music Festival:</h1>
+    <div id="event-carousel" class="carousel slide">
+        <div class="carousel-inner">
+            {% if music %}
+            {% for event in music %}
+            {% if forloop.counter0|divisibleby:4 %}
+            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                <div class="card-container text-light m-4">
+                    <div class="row justify-content-center">
+            {% endif %}
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="card event-card d-flex flex-wrap bg-transparent">
+                                <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
+                                <div class="header">
+                                    <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
+                                </div>
+                                <div class="card-body event-details">  
+                                    <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
+                                </div>
+                            </div>
+                        </div>
+            {% if forloop.last or forloop.counter0|add:1|divisibleby:4 %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% if not music %}
+            <div class="carousel-item active">
+                <p class="text-light m-3">No events found.</p>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+        <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
   </div>
-</div>
-<br>
-
-<h1 class="h1 text-light m-3"> Music Festivals:  </h1>
-<div class="card-container text-light m-4">
-  <div class="row justify-content-center">
-    {% if music %}
-    {% for event in music %}
-    <div class="col-md-3 col-sm-6 mb-3">
-      <div class="card event-card d-flex flex-wrap bg-transparent">
-          <img src="{{ event.poster }}" class="card-img-top" alt="{{ event.title }}", style="width:100%; height: 200px;object-fit: fill;">
-          <div class="header">
-              <h5 class="card-title"><a class="event-details text-light text-wrap" href="{% url 'events:event_details_and_reviews'  event_id=event.id %}">{{ event.title }}</a></h5>
-          </div>
-          <div class="card-body event-details">  
-              <p class="card-text  text-light text-wrap">{{ event.date }} - {{ event.city }} - {{ event.location }}</p>
-              <!--<p class="card-text">{{ event.description }}</p>-->
-              <!--<a href="{% url 'events:event_filter' %}" class="btn btn-outline-dark">View details</a>-->
-          </div>
-      </div>
-      </div>
-    {%endfor%}
-    {% else %}
-    <p class="text-light m-3">No events found.</p>
-  {% endif %}
-  </div>
-</div>
 <br>
 {% endblock %}
 </body>
