@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="container mt-4">
-  <h2 class="h2 mb-4">Settings</h2>
-  <form method="post" enctype="multipart/form-data">
+  <h2 class="h2 mb-4" style="color: white;">Settings</h2>
+  <form method="post" enctype="multipart/form-data" style="color: white;">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-outline-dark mb-4">Save changes</button>
+    <button type="submit" class="btn btn-outline-light mb-4">Save changes</button>
   </form>
 </div>
 {% endblock %}
