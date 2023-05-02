@@ -56,7 +56,8 @@ class Event(models.Model):
     def get_num_ratings(self):
         return self.reviews.count()
     def save(self, *args, **kwargs):
-        self.avg_rating = self.get_average_rating()
+        if self.pk:
+            self.avg_rating = self.get_average_rating()
         super(Event, self).save(*args, **kwargs)
 
 class MyUser(AbstractUser):
