@@ -2,6 +2,7 @@ body{
   background-image: url("./images/filter-image.jpg"); 
   background-size: cover;
 }
+
 .filter-heading{
   margin-left: 20px;
 }
@@ -21,21 +22,25 @@ body{
   align-items: center;
   font-size: 26px;
   font-family: sans-serif;
+  flex-direction: column;
 }
 
 .filter-item label {
-  margin-right: 10px;
+  /* margin-right: 80px; */
+  align-self: flex-start;
   font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 select,
 input[type="date"] {
   font-size: 16px;
+  width: 200px;
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 2px solid #cccccc;
   outline: none;
-  width: 200px;
 }
 
 select:focus,
@@ -48,8 +53,8 @@ select option {
 }
 
 .filter-button {
-  margin-left: 10px;
-  margin-top: 10px;
+  margin-left: 40px;
+  margin-top: 45px;
   display: block;
   padding: 10px 20px;
   border-radius: 5px;
@@ -65,7 +70,6 @@ select option {
   background-color: rgb(71, 71, 255)
 }
 
-
 .event-list {
   display: flex ;
   flex-wrap: wrap;
@@ -79,7 +83,12 @@ select option {
   max-width: 23%;
   margin: 0;
   } 
-  
+ 
+  /* .card-container {
+    padding: 20px;
+    margin-bottom: 30px;
+  } */
+
   .event-card {
   display: flex;
   flex-direction: column ;
@@ -92,9 +101,9 @@ select option {
   margin-bottom: 20px;
   border-color: black;
   border-radius: 10px;
-  
+  transition: all 0.3s ease-in-out;
   }
-  
+
   .event-card .card-img-top {
   width: 100%;
   height: 200px;
@@ -112,6 +121,12 @@ select option {
   overflow: hidden;
   text-overflow: ellipsis;
   color: rgb(71, 90, 255);
+  }
+
+  .event-card:hover {
+    box-shadow: 0 0 10px rgb(194, 71, 255, 1);
+    transform: translateY(-5px);
+    transform: scale(1.1);
   }
   
   .event-card .event-details {
@@ -173,7 +188,7 @@ select option {
   .card-container .event-list{
     margin-left: 100px;
   }
-
+  
   .star-rating {
     font-size: 30px;
   }

@@ -14,7 +14,7 @@ Filter Events
 <h1 style="color:white"; class="filter-heading"><strong>Filter Events</strong></h1>
 <form method="get" action="{% url 'events:event_filter' %}" class="filter-form">
     <div class="filter-item">
-        <p style="color: white"><label for="location">Location:</label></p>
+        <label style="color: white" for="location">Location:</label>
         <select name="location" id="location">
             <option value="">--Select Location--</option>
             {% for city in cities %}
@@ -23,12 +23,12 @@ Filter Events
         </select>
     </div>
     <div class="filter-item">
-        <p style="color:white"><label for="date">Date:</label></p>
+        <label style="color:white" for="date">Date:</label>
         <input type="date" name="date" id="date" value="{{ date }}">
     </div>
 
     <div class="filter-item">
-        <p style="color:white"><label for="duration">Duration:</label></p>
+        <label style="color:white" for="duration">Duration:</label>
         <select name="duration" id="duration">
             <option value="">--Select Duration--</option>
             <option value="01:00:00">1 hour</option>
@@ -39,7 +39,7 @@ Filter Events
         </select>
     </div>
     <div class="filter-item">
-        <p style="color:white"><label for="event_type">Event Type:</label></p>
+        <label style="color:white" for="event_type">Event Type:</label>
         <select name="event_type" id="event_type">
             <option value="">--Select Event Type--</option>
             {% for event_type in event_types %}
