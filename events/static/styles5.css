@@ -17,6 +17,7 @@ body{
 
 .filter-item {
   margin-right: 7px;
+  margin-left: 70px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -110,7 +111,8 @@ select option {
   object-fit: fill;
   
   }
-  
+
+
   .event-card .event-title {
   font-size: 28px;
   font-weight: bold;
@@ -122,7 +124,12 @@ select option {
   text-overflow: ellipsis;
   color: rgb(71, 90, 255);
   }
-
+  
+  .announcement-card:hover {
+    box-shadow: 0 0 10px rgba(194, 71, 255, 1) !important;
+    transform: translateY(-5px) !important;
+    transform: scale(1.1) !important;
+  }
   .event-card:hover {
     box-shadow: 0 0 10px rgb(194, 71, 255, 1);
     transform: translateY(-5px);

@@ -5,7 +5,9 @@
   <div class="row">
     <div class="col-sm-3">
       <div class="text-center">
-        <img src="{{ user.picture }}" class="avatar img-circle img-thumbnail" alt="avatar">
+        <img src="{{ user.picture }}" class="avatar img-circle img-thumbnail mx-auto d-block" alt="avatar" style="width: 500px; height: 250px;  border-radius: 25px;
+
+">
       </div>
     </div>
     <div class="col-sm-9">
@@ -13,25 +15,25 @@
       <hr>
       <dl class="row">
         <dt class="col-sm-3 m-2">Email</dt>
-        <dd class="col-sm-9 m-2">{{ user.email }}</dd>
+        <dd class="col-sm-9 m-2 border-bottom">{{ user.email }}</dd>
 
         <dt class="col-sm-3 m-2">Name</dt>
-        <dd class="col-sm-9 m-2">{{ user.first_name }} {{user.last_name}}</dd>
+        <dd class="col-sm-9 m-2 border-bottom">{{ user.first_name }} {{user.last_name}}</dd>
 
         <dt class="col-sm-3 m-2">Date of Birth</dt>
-        <dd class="col-sm-9 m-2">{{ user.date_of_birth }}</dd>
+        <dd class="col-sm-9 m-2 border-bottom">{{ user.date_of_birth }}</dd>
 
         <dt class="col-sm-3 m-2">Nationality</dt>
-        <dd class="col-sm-9 m-2">{{ user.nationality }}</dd>
+        <dd class="col-sm-9 m-2 border-bottom">{{ user.nationality }}</dd>
 
         <dt class="col-sm-3 m-2">Address</dt>
-        <dd class="col-sm-9 m-2">{{ user.address }}</dd>
+        <dd class="col-sm-9 m-2 border-bottom">{{ user.address }}</dd>
 
         <dt class="col-sm-3 m-2">Bio</dt>
-        <dd class="col-sm-9 m-2">{{ user.bio }}</dd>
+        <dd class="col-sm-9 m-2 border-bottom">{{ user.bio }}</dd>
 
         <dt class="col-sm-3 m-2">Promoter</dt>
-        <dd class="col-sm-9 m-2">{% if user.is_promoter %} Yes {% else %} No {% endif %}</dd>
+        <dd class="col-sm-9 m-2 border-bottom">{% if user.is_promoter %} Yes {% else %} No {% endif %}</dd>
       </dl>
     </div>
   </div>
