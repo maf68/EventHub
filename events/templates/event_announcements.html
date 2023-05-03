@@ -4,19 +4,30 @@
 <head>
   <title>{% block title %}{{event.title}}'s' Announcements{% endblock %}</title>
 </head>
+
 <body>
   {% block content %}
-  <h1 class="h1 text-light m-3">{{event.title}} Announcements</h1>
-  {% if announcements %}
-    <ul class="list-unstyled m-3">
-      {% for Announcement in announcements %}
-      <li><a class="text-light" href="{% url 'events:announcement_by_id' Announcement_id=Announcement.id %}">{{ Announcement.title }}</a></li>
-      <li class="text-light">{{ Announcement.description }}</li>
-      <li><img src="{{ Announcement.image }}" alt="{{ Announcement.title }}"  class="img-fluid rounded d-block" style="width:20%;"></li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="text-dark m-3">No announcements for this event yet.</p>
-  {% endif %}
+  <div class="d-flex  flex-column">
+    <h2 class="h2 text-light m-3">{{event.title}} Announcements</h2>
+
+    <div class="announcement-card border-primary bg-transparent m-3 p-3 mx-auto" style="width: 500px;">
+      {% if announcements %}
+      <ul class="list-unstyled">
+        {% for Announcement in announcements %}
+        <li class="d-flex align-items-center mb-3">
+          <img src="{{ Announcement.image }}" alt="{{ Announcement.title }}" class="img-fluid rounded mr-3" style="width:200px;">
+          <div>
+            <h4 class="text-light mb-0">{{ Announcement.title }}</h4>
+            <p class="text-light">{{ Announcement.description }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-light">No announcements for this event yet.</p>
+      {% endif %}
+    </div>
+
+  </div>
   {% endblock %}
 </body>

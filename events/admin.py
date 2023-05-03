@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Event, MyUser, Review, Announcement
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'city', 'location')
+    list_display = ('title', 'city', 'location', 'request_status')
     search_fields = ('title', 'location')
     list_filter = ('city',)
 
