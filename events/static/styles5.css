@@ -17,6 +17,7 @@ body{
 
 .filter-item {
   margin-right: 7px;
+  margin-left: 70px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;

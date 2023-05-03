@@ -21,7 +21,7 @@ class Event(models.Model):
     poster = models.URLField(blank = True)
     duration = models.DurationField(default=timedelta(hours=1))
     event_type = models.CharField(max_length=255, choices = CHOICES, default='General')
-    avg_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=0)
+    avg_rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     request_choices = (
         ("Accept", "Accept"),
         ("Reject", "Reject"),
