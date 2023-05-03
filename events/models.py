@@ -21,7 +21,7 @@ class Event(models.Model):
     poster = models.URLField(blank = True)
     duration = models.DurationField(default=timedelta(hours=1))
     event_type = models.CharField(max_length=255, choices = CHOICES, default='General')
-    avg_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=0)
+    avg_rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     request_choices = (
         ("Accept", "Accept"),
         ("Reject", "Reject"),
@@ -56,7 +56,8 @@ class Event(models.Model):
     def get_num_ratings(self):
         return self.reviews.count()
     def save(self, *args, **kwargs):
-        self.avg_rating = self.get_average_rating()
+        if self.pk:
+            self.avg_rating = self.get_average_rating()
         super(Event, self).save(*args, **kwargs)
 
 class MyUser(AbstractUser):

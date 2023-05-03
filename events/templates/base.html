@@ -5,20 +5,22 @@
     <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
     {% block head %} {% endblock %}
-   <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
 </head>
 
 <body>
     <header>
        <!--<h1 class="bg-light text-dark">Event Hub</h1>-->
         {% block navigation %}
-        <nav class="navbar navbar-expand-sm bg-dark">
+        <nav class="navbar navbar-expand-sm bg-dark text-light">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" href="{% url 'events:event_list' %}">Event Hub</a>
+                <a class="navbar-brand text-light" href="{% url 'events:event_list' %}">
+                    <img src="static/media/Logo.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                    Event Hub
+                </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -33,7 +35,7 @@
                 </div>
                 </div>           
                 <form method="GET" class="input-group col-md-3 col-sm-4" action="{% url 'events:event_filter' %}">
-                    <input type="text" class="form-control" "d-flex align-items-center" name="q" placeholder="Search events">
+                    <input type="text" class="form-control d-flex align-items-center" name="q" placeholder="Search events">
                     <button type="submit" class="btn btn-outline-light btn-addon-2">Search</button>
                 </form>
                 <a type="button" class="btn btn-outline-light col-md-1 col-sm-2  m-1 {% if user.is_authenticated %}d-none{% endif %}" href="{% url 'events:signup' %}">Sign up</a>

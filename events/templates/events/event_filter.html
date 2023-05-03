@@ -9,46 +9,52 @@ Filter Events
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'styles5.css' %}">
 {% endblock %}
-
+{% comment %}
+style="  font-size: 16px; width: 200px; padding: 5px; border-radius: 5px; border: 2px solid #cccccc; outline: none;"
+style="align-self: flex-start;font-weight: bold; margin-top: 10px; margin-bottom: 15px;"
+{% endcomment %}
 {% block content %}
 <h1 style="color:white"; class="filter-heading"><strong>Filter Events</strong></h1>
-<form method="get" action="{% url 'events:event_filter' %}" class="filter-form">
-    <div class="filter-item">
-        <label style="color: white" for="location">Location:</label>
-        <select name="location" id="location">
-            <option value="">--Select Location--</option>
-            {% for city in cities %}
-                <option value="{{ city }}">{{ city }}</option>
-            {% endfor %}
+<form method="get" action="{% url 'events:event_filter' %}" class="">
+    <div class="form-row justify-content-center ">
+      <div class="col-md-2 col-sm-3 m-1">
+        <label style="color: white" for="location" class="h3">Location:</label>
+        <select name="location" id="location" class="form-control">
+          <option value="">--Select Location--</option>
+          {% for city in cities %}
+            <option value="{{ city }}">{{ city }}</option>
+          {% endfor %}
         </select>
-    </div>
-    <div class="filter-item">
-        <label style="color:white" for="date">Date:</label>
-        <input type="date" name="date" id="date" value="{{ date }}">
-    </div>
-
-    <div class="filter-item">
-        <label style="color:white" for="duration">Duration:</label>
-        <select name="duration" id="duration">
-            <option value="">--Select Duration--</option>
-            <option value="01:00:00">1 hour</option>
-            <option value="01:30:00">1 hour 30 minutes</option> 
-            <option value="02:00:00">2 hours</option>
-            <option value="02:30:00">2 hour 30 minutes</option> 
-            <option value="3:00:00">3+ hours</option>
+      </div>
+      <div class="col-md-2 col-sm-3 m-1">
+        <label style="color:white" for="date" class="h3">Date:</label>
+        <input type="date" name="date" id="date" class="form-control" value="{{ date }}">
+      </div>
+      <div class="col-md-2 col-sm-3 m-1">
+        <label style="color:white" for="duration" class="h3">Duration:</label>
+        <select name="duration" id="duration" class="form-control">
+          <option value="">--Select Duration--</option>
+          <option value="01:00:00">1 hour</option>
+          <option value="01:30:00">1 hour 30 minutes</option> 
+          <option value="02:00:00">2 hours</option>
+          <option value="02:30:00">2 hour 30 minutes</option> 
+          <option value="3:00:00">3+ hours</option>
         </select>
-    </div>
-    <div class="filter-item">
-        <label style="color:white" for="event_type">Event Type:</label>
-        <select name="event_type" id="event_type">
-            <option value="">--Select Event Type--</option>
-            {% for event_type in event_types %}
-                <option value="{{ event_type }}">{{ event_type }}</option>
-            {% endfor %}
+      </div>
+      <div class="col-md-2 col-sm-3 m-1">
+        <label style="color:white" for="event_type" class="h3">Event Type:</label>
+        <select name="event_type" id="event_type" class="form-control">
+          <option value="">--Select Event Type--</option>
+          {% for event_type in event_types %}
+            <option value="{{ event_type }}">{{ event_type }}</option>
+          {% endfor %}
         </select>
+      </div>
+      <div class="col-md-1 col-sm-1 align-self-end">
+        <button type="submit" class="btn btn-primary filter-button">Filter</button>
+      </div>
     </div>
-    <button type="submit" class="filter-button">Filter</button>
-</form>
+  </form>
 
 <div class="card-container text-light m-4">
     {% if object_list %}
