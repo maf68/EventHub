@@ -15,9 +15,12 @@
     <header>
        <!--<h1 class="bg-light text-dark">Event Hub</h1>-->
         {% block navigation %}
-        <nav class="navbar navbar-expand-sm bg-dark">
+        <nav class="navbar navbar-expand-sm bg-dark text-light">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" href="{% url 'events:event_list' %}">Event Hub</a>
+                <a class="navbar-brand text-light" href="{% url 'events:event_list' %}">
+                    <img src="static/media/Logo.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                    Event Hub
+                </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>

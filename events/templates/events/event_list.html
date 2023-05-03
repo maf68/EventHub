@@ -47,15 +47,23 @@
   </div>
   </div>
 </div>
-
 {% endblock %}
 {%block content %}
 
 <div class="{% if not user.is_authenticated %}d-none{% endif %}">
   
   <h1 class="h1 text-light m-3">Your Preference:</h1>
-  <div id="event-carousel" class="carousel slide">
-      <div class="carousel-inner">
+  <div id="event-carousel1" class="carousel slide">
+    <div class="row">
+    <a class="carousel-control-prev col-md-1" href="#event-carousel1" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next col-md-1" href="#event-carousel1" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+      <div class="carousel-inner col">
           {% if preference %}
           {% for event in preference %}
           {% if forloop.counter0|divisibleby:4 %}
@@ -86,17 +94,10 @@
           </div>
           {% endif %}
       </div>
-      <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-      </a>
   </div>
 </div>
-
+</div>
+<br>
 
 {% comment %} <div class="{% if not user.is_authenticated %}d-none{% endif %}">
 <h1 class="h1 text-light m-3"> Your Preference: </h1>
@@ -151,9 +152,18 @@
   </div>
 </div> {% endcomment %}
 
-<h1 class="h1 text-light m-3">Highest Rated Events:</h1>
-<div id="event-carousel" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
+<h1 class="h1 text-light m-3">Featured Events:</h1>
+<div id="event-carousel2" class="carousel slide" data-ride="carousel">
+  <div class="row">
+  <a class="carousel-control-prev col-md-1" href="#event-carousel2" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next col-md-1" href="#event-carousel2" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  <div class="carousel-inner col">
     {% if high_rated %}
     {% for event in high_rated %}
     {% if forloop.counter0|divisibleby:4 %}
@@ -184,20 +194,21 @@
     </div>
     {% endif %}
   </div>
-  <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
+</div>
 </div>
 <br>
-
 <h1 class="h1 text-light m-3">Upcoming Events:</h1>
-  <div id="event-carousel" class="carousel slide">
-      <div class="carousel-inner">
+  <div id="event-carousel3" class="carousel slide">
+    <div class="row">
+    <a class="carousel-control-prev col-md-1" href="#event-carousel3" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next col-md-1" href="#event-carousel3" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+      <div class="carousel-inner col">
           {% if upcoming %}
           {% for event in upcoming %}
           {% if forloop.counter0|divisibleby:4 %}
@@ -229,19 +240,21 @@
           {% endif %}
           {% endif %}
       </div>
-      <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-      </a>
   </div>
+</div>
 <br>
 <h1 class="h1 text-light m-3">Sporting Events:</h1>
-  <div id="event-carousel" class="carousel slide">
-      <div class="carousel-inner">
+  <div id="event-carousel4" class="carousel slide">
+    <div class="row">
+    <a class="carousel-control-prev col-md-1" href="#event-carousel3" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next col-md-1 href="#event-carousel3" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+      <div class="carousel-inner col">
           {% if sports %}
           {% for event in sports %}
           {% if forloop.counter0|divisibleby:4 %}
@@ -273,20 +286,22 @@
           {% endif %}
           {% endif %}
       </div>
-      <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-      </a>
+  </div>
   </div>
 <br>
 
   <h1 class="h1 text-light m-3">Art Exhibition:</h1>
-    <div id="event-carousel" class="carousel slide">
-        <div class="carousel-inner">
+    <div id="event-carousel5" class="carousel slide">
+      <div class="row">
+      <a class="carousel-control-prev col-md-1" href="#event-carousel5" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next col-md-1" href="#event-carousel5" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+        <div class="carousel-inner col">
             {% if art %}
             {% for event in art %}
             {% if forloop.counter0|divisibleby:4 %}
@@ -318,20 +333,22 @@
             {% endif %}
             {% endif %}
         </div>
-        <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
+    </div>
     </div>
 <br>
 
   <h1 class="h1 text-light m-3">Music Festival:</h1>
-    <div id="event-carousel" class="carousel slide">
-        <div class="carousel-inner">
+    <div id="event-carousel6" class="carousel slide">
+      <div class="row">
+      <a class="carousel-control-prev col-md-1" href="#event-carousel6" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next col-md-1" href="#event-carousel6" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+        <div class="carousel-inner col">
             {% if music %}
             {% for event in music %}
             {% if forloop.counter0|divisibleby:4 %}
@@ -363,14 +380,7 @@
             {% endif %}
             {% endif %}
         </div>
-        <a class="carousel-control-prev" href="#event-carousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#event-carousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
+    </div>
     </div>
 <br>
 {% endblock %}
